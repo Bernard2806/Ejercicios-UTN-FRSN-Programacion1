@@ -14,4 +14,6 @@ int main(){
     printf("\n");
 
     printf("El área del triángulo es %.2lf", area);
+
+    return 0;
 }
