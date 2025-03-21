@@ -8,9 +8,7 @@ int main(){
 
     fahrenheit = (celcius * 9/5) + 32;
 
-    printf("\n");
-
-    printf("La cantidad de grados Fahrenheit es %f", fahrenheit);
+    printf("\nLa cantidad de grados Fahrenheit es %f", fahrenheit);
     
     return 0;
 }

@@ -11,9 +11,7 @@ int main(){
 
     suma = num1 + num2;
 
-    printf("\n");
-
-    printf("La suma de %d y %d es %d", num1, num2, suma);
+    printf("\nLa suma de %d y %d es %d", num1, num2, suma);
 
     return 0;
 }

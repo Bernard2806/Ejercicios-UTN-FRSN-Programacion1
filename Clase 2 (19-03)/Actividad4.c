@@ -9,9 +9,7 @@ int main(){
 
     dolares = pesos / precioDolarTurista;
 
-    printf("\n");
-
-    printf("La cantidad de dolares es: %.2f", dolares);
+    printf("\nLa cantidad de dolares es: %.2f", dolares);
 
     return 0;
 }

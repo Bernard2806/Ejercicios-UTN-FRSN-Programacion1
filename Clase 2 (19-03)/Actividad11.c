@@ -13,8 +13,7 @@ int main(){
 
     totalConIVA = valorProducto + (valorProducto * iva);
 
-    printf("\n");
-    printf("Producto: %s\n", nombreProducto);
+    printf("\nProducto: %s\n", nombreProducto);
     printf("Precio sin IVA: %.2f\n", valorProducto);
     printf("Precio con IVA (21%): %.2f\n", totalConIVA);
 

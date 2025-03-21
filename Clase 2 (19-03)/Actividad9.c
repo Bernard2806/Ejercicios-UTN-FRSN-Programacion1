@@ -14,9 +14,7 @@ int main(){
 
     totalEnSegundos = (horas * 3600) + (minutos * 60) + segundos;
 
-    printf("\n");
-
-    printf("El total de segundos es %d", totalEnSegundos);
+    printf("\nEl total de segundos es %d", totalEnSegundos);
     
     return 0;
 }
