@@ -6,7 +6,7 @@ int main() {
 
     // Bucle principal que controla el número de filas
     for (int i = 0; i < altura; i++) {
-        
+
         // Primer bucle interno: imprime los espacios en blanco
         // La cantidad de espacios disminuye en cada fila
         // En la primera fila son (altura - 1) espacios, y va disminuyendo
@@ -26,3 +26,4 @@ int main() {
     }
     
     return 0;
+}
