@@ -4,7 +4,7 @@ int main(){
     // Declaración de variables para almacenar los datos del usuario
     char nombre[150];      // Array de caracteres para el nombre (150 caracteres máximo)
     char direccion[150];   // Array de caracteres para la dirección (150 caracteres máximo)
-    char telefono[150];    // Array de caracteres para el teléfono (150 caracteres máximo)
+    char telefono[15];    // Array de caracteres para el teléfono (15 caracteres máximo) (La longitud máxima de un número de teléfono está establecida por el estándar E.164)
 
     // Solicitud y lectura del nombre
     printf("Ingrese tu nombre: ");
