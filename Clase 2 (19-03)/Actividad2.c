@@ -21,8 +21,7 @@ int main(){
 
     // Bucle que imprime los datos 3 veces
     for(int i = 0; i < 3; i++){
-        printf("\n");     // Imprime una línea en blanco
-        printf("Mi Nombre es %s, Mi Direccion es: %s, Mi Telefono es: %s", 
+        printf("\n\n Mi Nombre es %s, Mi Direccion es: %s, Mi Telefono es: %s", 
                nombre, direccion, telefono); // Muestra todos los datos
     }
     
