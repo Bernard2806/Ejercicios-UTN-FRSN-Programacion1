@@ -6,8 +6,8 @@ int main(){
     printf("Ingrese la hora (entre 0 y 23): ");
     scanf("%d", &hora);
 
-    prinf("\n");
-    
+    printf("\n");
+
     if(hora >= 6 && hora <= 11)
     {
         printf("Es de mañana");
