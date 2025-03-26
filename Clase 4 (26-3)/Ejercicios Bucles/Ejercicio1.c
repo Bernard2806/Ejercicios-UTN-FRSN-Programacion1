@@ -8,6 +8,6 @@ int main(){
         sumaTotal += i;
     }
 
-    printf("La suma total es: %d\n", sumaTotal);
+    printf("\nLa suma total es: %d", sumaTotal);
     return 0;
 }
