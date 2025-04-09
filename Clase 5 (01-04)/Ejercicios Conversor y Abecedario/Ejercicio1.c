@@ -1,91 +1,115 @@
 #include <stdio.h>
 
-enum tipoMonedas
+// Definimos las monedas usando un enum
+typedef enum
 {
-    DOLAR = 1,
-    EURO = 2,
-    PESO = 3
-};
+    MONEDA_INVALIDA = -1,
+    DOLAR = 0,
+    PESO_ARGENTINO,
+    REAL,
+    EURO
+} Moneda;
 
-int main()
+// Función para mostrar las opciones al usuario
+void mostrarOpcionesMoneda()
 {
-    // Definición de constantes
-    const float TASA_DOLAR_EURO = 0.85; // Ejemplo de tasa de cambio
-    const float TASA_DOLAR_PESO = 20;   // Ejemplo de tasa de cambio
-    const float TASA_EURO_DOLAR = 1.18; // Ejemplo de tasa de cambio
+    printf("Seleccione una moneda:\n");
+    printf("0 - Dólar estadounidense (USD)\n");
+    printf("1 - Peso argentino (ARS)\n");
+    printf("2 - Real brasileño (BRL)\n");
+    printf("3 - Euro (EUR)\n");
+}
 
-    // Definición de variables
-
-    float cantidad, resultado;
-    int monedaOrigen, monedaDestino;
-
-    printf("Ingrese la cantidad de dinero: ");
-    scanf("%f", &cantidad);
-
-    printf("Ingrese la moneda de origen (1: DOLAR, 2: EURO, 3: PESO): ");
-    scanf("%d", &monedaOrigen);
-
-    printf("Ingrese la moneda de destino (1: DOLAR, 2: EURO, 3: PESO): ");
-    scanf("%d", &monedaDestino);
-
-    // Conversión de monedas
+// Función para convertir cualquier moneda a dólares
+float convertirADolar(float cantidad, Moneda monedaOrigen)
+{
     switch (monedaOrigen)
     {
     case DOLAR:
-        switch (monedaDestino)
-        {
-        case DOLAR:
-            resultado = cantidad;
-            break;
-        case EURO:
-            resultado = cantidad * 0.85; // Ejemplo de tasa de cambio
-            break;
-        case PESO:
-            resultado = cantidad * 20; // Ejemplo de tasa de cambio
-            break;
-        default:
-            printf("Moneda de destino no válida.\n");
-            return 1;
-        }
-        break;
+        return cantidad; // Ya está en dólares, capo
+    case PESO_ARGENTINO:
+        return cantidad / 1068.55;
+    case REAL:
+        return cantidad / 4.98;
     case EURO:
-        switch (monedaDestino)
-        {
-        case DOLAR:
-            resultado = cantidad * 1.18; // Ejemplo de tasa de cambio
-            break;
-        case EURO:
-            resultado = cantidad;
-            break;
-        case PESO:
-            resultado = cantidad * 23.5; // Ejemplo de tasa de cambio
-            break;
-        default:
-            printf("Moneda de destino no válida.\n");
-            return 1;
-        }
-        break;
-    case PESO:
-        switch (monedaDestino)
-        {
-        case DOLAR:
-            resultado = cantidad * 0.05; // Ejemplo de tasa de cambio
-            break;
-        case EURO:
-            resultado = cantidad * 0.042; // Ejemplo de tasa de cambio
-            break;
-        case PESO:
-            resultado = cantidad;
-            break;
-        default:
-            printf("Moneda de destino no válida.\n");
-            return 1;
-        }
-        break;
+        return cantidad / 0.92;
     default:
-        printf("Moneda de origen no válida.\n");
+        return -1.0f; // Algo salió mal
+    }
+}
+
+// Función para convertir de dólares a la moneda destino
+float convertirDesdeDolar(float cantidadUSD, Moneda monedaDestino)
+{
+    switch (monedaDestino)
+    {
+    case DOLAR:
+        return cantidadUSD;
+    case PESO_ARGENTINO:
+        return cantidadUSD * 1068.55;
+    case REAL:
+        return cantidadUSD * 4.98;
+    case EURO:
+        return cantidadUSD * 0.92;
+    default:
+        return -1.0f;
+    }
+}
+
+int main()
+{
+    Moneda monedaOrigen, monedaDestino;
+    float cantidad, cantidadEnUSD, resultado;
+
+    printf("===== CONVERSOR DE MONEDAS =====\n\n");
+
+    // Seleccionar moneda de origen
+    mostrarOpcionesMoneda();
+    printf("Ingrese el número correspondiente a la moneda de origen: ");
+    scanf("%d", (int *)&monedaOrigen);
+
+    // Validamos la moneda de origen
+    if (monedaOrigen < DOLAR || monedaOrigen > EURO)
+    {
+        printf("Moneda de origen inválida. No te zarpes, eh.\n");
         return 1;
     }
+
+    // Seleccionar moneda de destino
+    mostrarOpcionesMoneda();
+    printf("Ingrese el número correspondiente a la moneda de destino: ");
+    scanf("%d", (int *)&monedaDestino);
+
+    // Validamos la moneda de destino
+    if (monedaDestino < DOLAR || monedaDestino > EURO)
+    {
+        printf("Moneda de destino inválida. Fijate bien, mostro.\n");
+        return 1;
+    }
+
+    // Si son la misma moneda, no tiene sentido convertir
+    if (monedaOrigen == monedaDestino)
+    {
+        printf("Elegiste la misma moneda para origen y destino. No hace falta convertir nada.\n");
+        return 0;
+    }
+
+    // Ingresar cantidad a convertir
+    printf("Ingrese la cantidad de dinero a convertir: ");
+    scanf("%f", &cantidad);
+
+    if (cantidad <= 0)
+    {
+        printf("La cantidad debe ser mayor a cero. No seas laucha.\n");
+        return 1;
+    }
+
+    // Convertimos primero a dólares y después a la moneda destino
+    cantidadEnUSD = convertirADolar(cantidad, monedaOrigen);
+    resultado = convertirDesdeDolar(cantidadEnUSD, monedaDestino);
+
+    // Mostramos el resultado
+    printf("\nResultado de la conversión: %.2f\n", resultado);
 
     return 0;
 }
