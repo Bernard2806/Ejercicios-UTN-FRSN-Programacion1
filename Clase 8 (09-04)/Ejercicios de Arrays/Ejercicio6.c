@@ -20,17 +20,14 @@ void mostrarArray(int numeros[], int longitud)
 
 void desplazarArrayUnoALaDerecha(int numeros[], int longitud)
 {
-    int temp1, temp2;
-    temp1 = numeros[longitud - 1]; // Guardar el último elemento
-    temp2 = numeros[0]; //Guardar el primer elemento
+    int aux = numeros[0];
 
-    for (int i = 0; i < longitud; i++)
+    for (int i = 0; i < longitud - 1; i++)
     {
         numeros[i] = numeros[i + 1];
     }
 
-    numeros[longitud - 1] = temp2; // Colocar el primer elemento en la última posición
-    numeros[0] = temp1; // Colocar el último elemento en la primera posición
+    numeros[longitud - 1] = aux;
 }
 
 int main()
