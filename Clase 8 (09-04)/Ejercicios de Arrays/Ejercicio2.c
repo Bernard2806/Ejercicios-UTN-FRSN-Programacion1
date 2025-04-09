@@ -11,7 +11,8 @@ void mostrarArrayDeCaracteres(char caracteres[], int longitud)
     }
 }
 
-int main(){
+int main()
+{
     char simbolos[10];
 
     simbolos[0] = 'a';

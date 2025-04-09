@@ -1,7 +1,6 @@
 #include <stdio.h>
-#include <stdlib.h> 
+#include <stdlib.h>
 #include <time.h>
-
 
 void cargarArrayConNumerosAleatorios(int numeros[], int longitud)
 {
@@ -29,7 +28,8 @@ void mostrarArray(int numeros[], int longitud)
     printf("\n");
 }
 
-int main(){
+int main()
+{
     int numeros[20];
     int cuadrado[20];
     int cubo[20];

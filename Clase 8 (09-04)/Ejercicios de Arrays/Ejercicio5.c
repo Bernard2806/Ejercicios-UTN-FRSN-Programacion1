@@ -54,16 +54,16 @@ void mostrarArrayEspecial(int numeros[], int longitud, int maximo, int minimo)
     }
 }
 
-
-int main(){
+int main()
+{
     int num[10];
 
-    ingresarNumerosAlArray(num, sizeof(num)/sizeof(num[0]));
+    ingresarNumerosAlArray(num, sizeof(num) / sizeof(num[0]));
 
-    int maximo = calcularMaximo(num, sizeof(num)/sizeof(num[0]));
-    int minimo = calcularMinimo(num, sizeof(num)/sizeof(num[0]));
+    int maximo = calcularMaximo(num, sizeof(num) / sizeof(num[0]));
+    int minimo = calcularMinimo(num, sizeof(num) / sizeof(num[0]));
 
-    mostrarArrayEspecial(num, sizeof(num)/sizeof(num[0]), maximo, minimo);
+    mostrarArrayEspecial(num, sizeof(num) / sizeof(num[0]), maximo, minimo);
 
     return 0;
 }
