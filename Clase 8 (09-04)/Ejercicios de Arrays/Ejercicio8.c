@@ -16,13 +16,14 @@ void paresAlPrincipioYImparesAlFinal(int numeros[], int longitud)
 {
     for (int i = 0; i < longitud; i++)
     {
-        // Si el número es par, lo coloca al principio del array
+        // Recorremos desde la posición i hasta el final buscando un número par
         for (int j = i + 1; j < longitud; j++)
         {
-            // Si el número en la posición i es impar y el número en la posición j es par
+            // Si el número actual (numeros[i]) es impar
+            // y encontramos un número par a su derecha (numeros[j]),
+            // los intercambiamos.
             if (numeros[i] % 2 != 0 && numeros[j] % 2 == 0)
             {
-                // Intercambiar los elementos
                 int temp = numeros[i];
                 numeros[i] = numeros[j];
                 numeros[j] = temp;
