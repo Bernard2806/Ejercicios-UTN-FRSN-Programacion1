@@ -994,7 +994,9 @@ _deps
 *.o
 *.ko
 *.obj
-*.elf
+
+# Compiled Archive files
+*output/
 
 # Linker output
 *.ilk
