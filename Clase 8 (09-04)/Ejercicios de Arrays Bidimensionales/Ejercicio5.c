@@ -1,6 +1,6 @@
 #include <stdio.h>
 
-void cargarMatrizConNumerosAleatorios(int numeros[10][10])
+void cargarMatrizConNumerosAleatorios(int numeros[10][10], int min, int max)
 {
     srand(time(NULL)); // Inicializar semilla
 
@@ -8,7 +8,7 @@ void cargarMatrizConNumerosAleatorios(int numeros[10][10])
     {
         for (int c = 0; c < 10; c++)
         {
-            numeros[f][c] = rand() % 1000 + 1; // Números aleatorios entre 1 y 1000
+            numeros[f][c] = rand() % (max - min + 1) + min;
         }
     }
 }
@@ -81,7 +81,7 @@ int main()
 {
     int matriz[10][10];
 
-    cargarMatrizConNumerosAleatorios(matriz);
+    cargarMatrizConNumerosAleatorios(matriz, 200, 300);
     printf("----- Matriz Aleatoria 10x10 -----\n");
     mostrarMatriz(matriz);
     printf("\n");
