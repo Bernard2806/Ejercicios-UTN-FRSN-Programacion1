@@ -979,6 +979,7 @@ _deps
 
 # Executables
 *.exe
+*.sh
 *.out
 *.app
 
