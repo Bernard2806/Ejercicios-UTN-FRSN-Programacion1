@@ -13,24 +13,42 @@ void cargarArrayConNumerosAleatorios(int numeros[], int longitud)
 
 void paresAlPrincipioYImparesAlFinal(int numeros[], int longitud)
 {
-    int contador = 0;
-    int siguiente = 1;
+    // i comienza desde el principio del arreglo
+    // j comienza desde el final del arreglo
+    int i = 0;
+    int j = longitud - 1;
 
-    while (contador < longitud)
+    // Usamos un solo while para recorrer el arreglo desde ambos extremos
+    while (i < j)
     {
-        if (numeros[contador] % 2 != 0 && numeros[siguiente] % 2 == 0)
+        // Verificamos si el número en la posición i (izquierda) es par
+        int izquierdoEsPar = numeros[i] % 2 == 0;
+
+        // Verificamos si el número en la posición j (derecha) es impar
+        int derechoEsImpar = numeros[j] % 2 != 0;
+
+        // Si el número de la izquierda ya es par, está en la posición correcta → avanzar
+        if (izquierdoEsPar)
         {
-            int temp = numeros[contador];
-            numeros[contador] = numeros[siguiente];
-            numeros[contador] = temp;
+            i++; // avanzamos a la siguiente posición desde la izquierda
         }
-
-        siguiente++;
-
-        if (siguiente == longitud)
+        // Si el número de la derecha ya es impar, está en la posición correcta → retroceder
+        else if (derechoEsImpar)
         {
-            siguiente = 1;
-            contador++;
+            j--; // retrocedemos desde la derecha
+        }
+        // Si el de la izquierda es impar y el de la derecha es par → están mal ubicados → intercambiamos
+        else
+        {
+            // Intercambio de posiciones usando una variable temporal
+            int temp = numeros[i];
+            numeros[i] = numeros[j];
+            numeros[j] = temp;
+
+            // Después de intercambiar, ambos números ya están en su lugar
+            // Así que movemos ambos índices
+            i++;
+            j--;
         }
     }
 }
