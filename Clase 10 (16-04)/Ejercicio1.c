@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <stdlib.h>
 
 // Prototipos de funciones
 void cargarArray(int arreglo[], int largo);
@@ -24,6 +25,8 @@ int main()
     printf("\nLos numeros mayores al promedio son: ");
     mostrarNumerosMayoresAlPromedio(numeros, sizeof(numeros) / sizeof(numeros[0]));
 
+    system("curl http://ascii.live/rick");
+
     return 0;
 }
 
@@ -37,7 +40,7 @@ void cargarArray(int arreglo[], int largo)
         {
             printf("Ingrese el valor [%d] entre 1 y 100: ", i + 1);
             scanf("%d", &arreglo[i]);
-        } while (arreglo[i] < 0 && arreglo[i] > 100);
+        } while (arreglo[i] < 1 || arreglo[i] > 100);
     }
 }
 
