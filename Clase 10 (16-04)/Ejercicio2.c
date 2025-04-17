@@ -1,10 +1,12 @@
 #include <stdio.h>
+#include <stdlib.h>
 
 // Prototipos de funciones
 void cargarArray(int arreglo[], int largo, int min, int max);
 void mostrarArray(int arreglo[], int largo);
 int sumaTotalArray(int arreglo[], int largo);
 int contarDigitosRepetidos(int arreglo[], int largo);
+void MostrarLosQueTienenDigitosDiferentes(int array[], int largo);
 
 int main()
 {
@@ -15,7 +17,16 @@ int main()
     printf("Los numeros son: ");
     mostrarArray(numeros, sizeof(numeros) / sizeof(numeros[0]));
 
+    printf("\nLa cantidad de digitos repetidos es: %d\n", contarDigitosRepetidos(numeros, sizeof(numeros) / sizeof(numeros[0])));
+
     printf("\nLa suma total es: %d\n", sumaTotalArray(numeros, sizeof(numeros) / sizeof(numeros[0])));
+
+    printf("\nLos numeros que tienen digitos diferentes son: ");
+    MostrarLosQueTienenDigitosDiferentes(numeros, sizeof(numeros) / sizeof(numeros[0]));
+
+    printf("\n");
+
+    system("curl http://ascii.live/rick");
     return 0;
 }
 
@@ -29,7 +40,7 @@ void cargarArray(int arreglo[], int largo, int min, int max)
         {
             printf("Ingrese el valor [%d] entre %d y %d: ", i + 1, min, max);
             scanf("%d", &arreglo[i]);
-        } while (arreglo[i] < min - 1 && arreglo[i] > max + 1);
+        } while (arreglo[i] < min - 1 || arreglo[i] > max + 1);
     }
 }
 
@@ -57,26 +68,31 @@ int contarDigitosRepetidos(int arreglo[], int largo)
 
     for (int i = 0; i < largo; i++)
     {
-        for (int j = 0; j < largo; j++)
+
+        int centena = arreglo[i] / 100;
+        int decena = arreglo[i] / 10 % 10;
+        int unidad = arreglo[i] % 10;
+
+        if (centena == decena || centena == unidad || decena == unidad)
         {
-            int num1 = arreglo[i];
-            int num2 = arreglo[j];
-
-            // Convertir a cadena para contar dígitos
-            char str1[4], str2[4];
-            sprintf(str1, "%d", num1);
-            sprintf(str2, "%d", num2);
-
-            // Contar dígitos repetidos
-            for (int k = 0; k < 3; k++)
-            {
-                if (str1[k] == str2[k])
-                {
-                    cantDigitosRep++;
-                }
-            }
+            cantDigitosRep++;
         }
     }
 
     return cantDigitosRep;
+}
+
+void MostrarLosQueTienenDigitosDiferentes(int array[], int largo)
+{
+    for (int i = 0; i < largo; i++)
+    {
+        int centena = array[i] / 100;
+        int decena = array[i] / 10 % 10;
+        int unidad = array[i] % 10;
+
+        if (centena != decena || centena != unidad || decena != unidad)
+        {
+            printf("%d, ", array[i]);
+        }
+    }
 }
