@@ -6,6 +6,9 @@
 void cargarNombreEquipos(char equipos[][25], int cantidadEquipos);
 void cargarPuntosEquipos(int equipos[][4], char equiposNombres[][25], int cantidadEquipos);
 void mostrarTablaEquipos(int equipos[][4], char equiposNombres[][25]);
+void mostrarResultados(int equipos[][4], char equiposNombres[][25]);
+
+void mostrarGanador(int equipos[][4], char equiposNombres[][25], int cantidadEquipos);
 
 int calcularPuntosTotalEquipo(int equipos[][4], int equipo);
 
@@ -18,6 +21,7 @@ int main()
     cargarPuntosEquipos(equiposPuntos, equiposNombres, 2);
 
     mostrarTablaEquipos(equiposPuntos, equiposNombres);
+    mostrarResultados(equiposPuntos, equiposNombres);
     
     return 0;
 }
@@ -47,7 +51,8 @@ void cargarPuntosEquipos(int equipos[][4], char equiposNombres[][25], int cantid
     }
 }
 
-void mostrarTablaEquipos(int equipos[][4], char equiposNombres[][25]){
+void mostrarTablaEquipos(int equipos[][4], char equiposNombres[][25])
+{
     printf("\nTabla de Equipos:\n");
     printf("Equipo\tP1\tP2\tP3\tP4\n");
     for (int f = 0; f < 2; f++)
@@ -71,4 +76,32 @@ int calcularPuntosTotalEquipo(int equipos[][4], int equipo)
     }
 
     return total;
+}
+
+void mostrarResultados(int equipos[][4], char equiposNombres[][25])
+{
+    printf("\nResultados:");
+    mostrarGanador(equipos, equiposNombres, 2);
+
+}
+
+void mostrarGanador(int equipos[][4], char equiposNombres[][25], int cantidadEquipos)
+{
+    int TotalPuntos[2] = {0, 0};
+
+    TotalPuntos[0] = calcularPuntosTotalEquipo(equipos, 0);
+    TotalPuntos[1] = calcularPuntosTotalEquipo(equipos, 1);
+
+    if (TotalPuntos[0] > TotalPuntos[1])
+    {
+        printf("El ganador es: %s\n", equiposNombres[0], TotalPuntos[0]);
+    }
+    else if (TotalPuntos[1] > TotalPuntos[0])
+    {
+        printf("El ganador es: %s\n", equiposNombres[1], TotalPuntos[1]);
+    }
+    else
+    {
+        printf("Empate\n");
+    }
 }
