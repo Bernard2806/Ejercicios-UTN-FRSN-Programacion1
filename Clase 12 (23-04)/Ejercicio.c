@@ -10,6 +10,7 @@ void mostrarResultados(int equipos[][4], char equiposNombres[][25]);
 
 void mostrarGanador(int equipos[][4], char equiposNombres[][25], int cantidadEquipos);
 void mostrarCuartoConMasDiferenciaEntreSi(int equipos[][4], int cantidadEquipos);
+void mostrarCuartoMasParejoEntreSi(int equipos[][4], int cantidadEquipos);
 
 int calcularPuntosTotalEquipo(int equipos[][4], int equipo);
 
@@ -84,7 +85,7 @@ void mostrarResultados(int equipos[][4], char equiposNombres[][25])
     printf("\nResultados:");
     mostrarGanador(equipos, equiposNombres, 2);
     mostrarCuartoConMasDiferenciaEntreSi(equipos, 2);
-
+    mostrarCuartoMasParejoEntreSi(equipos, 2);
 }
 
 void mostrarGanador(int equipos[][4], char equiposNombres[][25], int cantidadEquipos)
@@ -121,4 +122,19 @@ void mostrarCuartoConMasDiferenciaEntreSi(int equipos[][4], int cantidadEquipos)
     }
 
     printf("El cuarto con mas diferencia entre si es el cuarto %d (%d Puntos)\n", CuartoConMasDifrerencia, DiferenciaMaxima);
+}
+
+void mostrarCuartoMasParejoEntreSi(int equipos[][4], int cantidadEquipos){
+    int CuartoMasParejo = 0;
+    int ParejoMaximo = 0;
+
+    for(int i = 0; i < 4; i++){
+        int Diferencia = abs(equipos[0][i] - equipos[1][i]);
+        if(Diferencia < ParejoMaximo || ParejoMaximo == 0){
+            ParejoMaximo = Diferencia;
+            CuartoMasParejo = i + 1;
+        }
+    }
+
+    printf("El cuarto mas parejo entre si es el cuarto %d (%d Puntos)\n", CuartoMasParejo, ParejoMaximo);
 }
