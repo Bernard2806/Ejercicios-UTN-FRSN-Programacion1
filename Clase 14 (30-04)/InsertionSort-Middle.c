@@ -1,6 +1,7 @@
 #include <stdio.h>
 
-int main(){
+int main()
+{
 
     // Paso 1: Declarar arreglo y cantidad de elementos
     int arr[100] = {10, 20, 30, 40, 50};
@@ -11,7 +12,8 @@ int main(){
     int pos = 2;
 
     // Paso 3: Desplazar elementos a la derecha
-    for (int i = n; i > pos; i--) {
+    for (int i = n; i > pos; i--)
+    {
         arr[i] = arr[i - 1];
     }
 

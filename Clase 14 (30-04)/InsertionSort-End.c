@@ -5,7 +5,8 @@
 // Esto significa que el nuevo arreglo será {10, 20, 30, 40, 50, 5}.
 // Esto consume menos tiempo y espacio, ya que se están desplazando menos elementos.
 
-int main(){
+int main()
+{
 
     // Paso 1: Declarar arreglo y cantidad de elementos
     int arr[100] = {10, 20, 30, 40, 50};
@@ -16,7 +17,8 @@ int main(){
     int pos = 6;
 
     // Paso 3: Desplazar elementos a la derecha
-    for (int i = n; i > pos; i--) {
+    for (int i = n; i > pos; i--)
+    {
         arr[i] = arr[i - 1];
     }
 
