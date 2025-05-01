@@ -3,27 +3,56 @@
 
 // Prototipos de funciones
 
+// Funciones de uso recurrente
+void mostrarArray(float array[], int size);
 void clearConsole();
 
+// Funciones para imprimir arte ASCII y menú
 void imprimirArteAscii();
 void imprimirInicio();
 int imprimirMenu();
 
-void logicaMenu(int opcion);
+// Funcion de la lógica del menú
+void logicaMenu(int opcion, float notas[]);
 
 int main()
 {
     imprimirInicio(); // Imprime el arte ASCII y espera a que el usuario presione una tecla
 
-    float notas[10] = {7.5, 5.0, 9.2, 6.8, 8.1, 4.3, 7.0, 5.5, 9.9, 6.0};
+    float notasOriginal[10] = {7.5, 5.0, 9.2, 6.8, 8.1, 4.3, 7.0, 5.5, 9.9, 6.0};
 
-    while(1)
+    while (1)
     {
-        int opcion = imprimirMenu(); // Imprime el menú y obtiene la opción del usuario
-        logicaMenu(opcion); // Llama a la función que maneja la lógica del menú
+        int opcion = imprimirMenu();       // Imprime el menú y obtiene la opción del usuario
+        logicaMenu(opcion, notasOriginal); // Llama a la función que maneja la lógica del menú
     }
 
     return 0;
+}
+
+void logicaMenu(int opcion, float notas[])
+{
+    int largoArray = sizeof(notas) / sizeof(notas[0]); // Calcula el tamaño del array
+
+    switch (opcion)
+    {
+    case 1:
+        // Lógica para ordenar usando Bubble Sort
+        break;
+    case 2:
+        // Lógica para ordenar usando Insertion Sort
+        break;
+    case 3:
+        // Lógica para ordenar usando Selection Sort
+        break;
+    case 4:
+        mostrarArray(notas, largoArray); // Muestra el array original
+        printf("\nPresiona cualquier tecla para continuar...\n");
+        getchar(); // Espera a que el usuario presione una tecla
+        break;
+    case 5:
+        exit(0); // Salir del programa
+    }
 }
 
 int imprimirMenu()
@@ -66,7 +95,7 @@ void clearConsole()
 #endif
 }
 
-void ImprimirArteAscii()
+void imprimirArteAscii()
 {
     clearConsole(); // Limpia la consola
 
