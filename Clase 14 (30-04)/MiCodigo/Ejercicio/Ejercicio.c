@@ -19,7 +19,7 @@ void logicaMenu(int opcion, float notas[]);
 // Funciones de ordenamiento
 void bubbleSort(int arr[], int n, int *comparaciones, int *intercambios);
 void insertionSort(int arr[], int n, int *comparaciones, int *intercambios);
-void selectionSort(float array[], int size);
+void selectionSort(int arr[], int n, int *comparaciones, int *intercambios);
 
 int main()
 {
@@ -46,6 +46,9 @@ void logicaMenu(int opcion, float notas[])
 
     int comparaciones = 0, intercambios = 0; // Inicializa contadores de comparaciones e intercambios
 
+    clearConsole(); // Limpia la consola
+
+    // Lógica del menú según la opción seleccionada
     switch (opcion)
     {
     case 1:
@@ -68,6 +71,12 @@ void logicaMenu(int opcion, float notas[])
         break;
     case 3:
         // Lógica para ordenar usando Selection Sort
+        selectionSort(notasCopia, largoArray, &comparaciones, &intercambios);
+        printf("Selection Sort:\n");
+        printf("Comparaciones: %d\n", comparaciones);
+        printf("Intercambios: %d\n", intercambios);
+        printf("Array ordenado:\n");
+        mostrarArray(notasCopia, largoArray); // Muestra el array ordenado
         break;
     case 4:
         mostrarArray(notas, largoArray); // Muestra el array original
@@ -76,6 +85,33 @@ void logicaMenu(int opcion, float notas[])
         break;
     case 5:
         exit(0); // Salir del programa
+    }
+}
+
+// Función Selection Sort que cuenta comparaciones e intercambios
+void selectionSort(int arr[], int n, int *comparaciones, int *intercambios) {
+    *comparaciones = 0;
+    *intercambios = 0;
+
+    for (int i = 0; i < n - 1; i++) {
+        int min_idx = i;
+        for (int j = i + 1; j < n; j++) {
+            (*comparaciones)++;
+            if (arr[j] < arr[min_idx]) {
+                min_idx = j;
+            }
+        }
+
+        // Solo intercambiamos si es necesario
+        if (min_idx != i) {
+            int temp = arr[min_idx];
+            arr[min_idx] = arr[i];
+            arr[i] = temp;
+            (*intercambios)++;
+        }
+
+        printf("Después de pasada %d: ", i + 1);
+        mostrarArray(arr, n);
     }
 }
 
