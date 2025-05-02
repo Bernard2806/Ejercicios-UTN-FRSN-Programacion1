@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 
 // Prototipos de funciones
 
@@ -14,6 +15,11 @@ int imprimirMenu();
 
 // Funcion de la lógica del menú
 void logicaMenu(int opcion, float notas[]);
+
+// Funciones de ordenamiento
+void bubbleSort(int arr[], int n, int *comparaciones, int *intercambios);
+void insertionSort(float array[], int size);
+void selectionSort(float array[], int size);
 
 int main()
 {
@@ -34,10 +40,22 @@ void logicaMenu(int opcion, float notas[])
 {
     int largoArray = sizeof(notas) / sizeof(notas[0]); // Calcula el tamaño del array
 
+    float notasCopia[largoArray]; // Crea un array copia para no modificar el original
+
+    memcpy(notasCopia, notas, sizeof(notas)); // Copia el contenido del array original al array copia
+
+    int comparaciones = 0, intercambios = 0; // Inicializa contadores de comparaciones e intercambios
+
     switch (opcion)
     {
     case 1:
         // Lógica para ordenar usando Bubble Sort
+        bubbleSort(notasCopia, largoArray, &comparaciones, &intercambios);
+        printf("Bubble Sort:\n");
+        printf("Comparaciones: %d\n", comparaciones);
+        printf("Intercambios: %d\n", intercambios);
+        printf("Array ordenado:\n");
+        mostrarArray(notasCopia, largoArray); // Muestra el array ordenado
         break;
     case 2:
         // Lógica para ordenar usando Insertion Sort
@@ -52,6 +70,29 @@ void logicaMenu(int opcion, float notas[])
         break;
     case 5:
         exit(0); // Salir del programa
+    }
+}
+
+// Función de Bubble Sort que cuenta comparaciones e intercambios
+void bubbleSort(int arr[], int n, int *comparaciones, int *intercambios)
+{
+    *comparaciones = 0;
+    *intercambios = 0;
+
+    for (int i = 0; i < n - 1; i++)
+    {
+        for (int j = 0; j < n - i - 1; j++)
+        {
+            (*comparaciones)++;
+            if (arr[j] > arr[j + 1])
+            {
+                // Intercambiar
+                int temp = arr[j];
+                arr[j] = arr[j + 1];
+                arr[j + 1] = temp;
+                (*intercambios)++;
+            }
+        }
     }
 }
 
