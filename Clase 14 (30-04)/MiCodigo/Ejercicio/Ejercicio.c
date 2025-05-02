@@ -18,7 +18,7 @@ void logicaMenu(int opcion, float notas[]);
 
 // Funciones de ordenamiento
 void bubbleSort(int arr[], int n, int *comparaciones, int *intercambios);
-void insertionSort(float array[], int size);
+void insertionSort(int arr[], int n, int *comparaciones, int *intercambios);
 void selectionSort(float array[], int size);
 
 int main()
@@ -59,6 +59,12 @@ void logicaMenu(int opcion, float notas[])
         break;
     case 2:
         // Lógica para ordenar usando Insertion Sort
+        insertionSort(notasCopia, largoArray, &comparaciones, &intercambios);
+        printf("Insertion Sort:\n");
+        printf("Comparaciones: %d\n", comparaciones);
+        printf("Intercambios: %d\n", intercambios);
+        printf("Array ordenado:\n");
+        mostrarArray(notasCopia, largoArray); // Muestra el array ordenado
         break;
     case 3:
         // Lógica para ordenar usando Selection Sort
@@ -93,6 +99,37 @@ void bubbleSort(int arr[], int n, int *comparaciones, int *intercambios)
                 (*intercambios)++;
             }
         }
+    }
+}
+
+void insertionSort(int arr[], int n, int *comparaciones, int *intercambios)
+{
+    *comparaciones = 0;
+    *intercambios = 0;
+
+    for (int i = 1; i < n; i++)
+    {
+        int key = arr[i];
+        int j = i - 1;
+
+        while (j >= 0)
+        {
+            (*comparaciones)++; // Contamos la comparación j >= 0 && arr[j] > key
+            if (arr[j] > key)
+            {
+                arr[j + 1] = arr[j];
+                (*intercambios)++; // Contamos el movimiento como intercambio
+                j--;
+            }
+            else
+            {
+                break; // Si no se cumple, rompemos el ciclo
+            }
+        }
+        arr[j + 1] = key;
+
+        printf("Después de pasada %d: ", i);
+        mostrarArray(arr, n);
     }
 }
 
