@@ -26,7 +26,7 @@ jobs:
       - name: Find PDFs and generate YAML
         run: |
           echo "pdfs:" > pdfs.yaml
-          repo_url="https://github.com/${{ github.repository }}/raw/main"
+          repo_url="https://github.com/${{ github.repository }}/blob/main"
           find . -type f -iname '*.pdf' | while read file; do
             date=$(git log -1 --format="%ci" -- "$file")
             clean_path="${file#./}"
