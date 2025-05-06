@@ -1,11 +1,11 @@
-name: Generate PDFs YAML
+name: Generate PDFs JSON
 
 on:
   push:
-    branches: [ main ]
+    branches: [main]
 
 permissions:
-  contents: write  # ✅ Habilita escritura al repositorio
+  contents: write # ✅ Habilita escritura al repositorio
 
 jobs:
   build:
@@ -18,34 +18,36 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '20'
+          node-version: "20"
 
-      - name: Install YAML CLI
-        run: npm install -g yaml-cli
-
-      - name: Find PDFs and generate YAML
+      - name: Find PDFs and generate JSON
         run: |
-          echo "pdfs:" > pdfs.yaml
           repo_url="https://github.com/${{ github.repository }}/blob/main"
+          echo "[" > pdfs.json
+          first=true
           find . -type f -iname '*.pdf' | while read file; do
             date=$(git log -1 --format="%ci" -- "$file")
             clean_path="${file#./}"
             full_url="$repo_url/$clean_path"
-            echo "  - path: \"$clean_path\"" >> pdfs.yaml
-            echo "    url: \"$full_url\"" >> pdfs.yaml
-            echo "    date: \"$date\"" >> pdfs.yaml
+            if [ "$first" = true ]; then
+              first=false
+            else
+              echo "," >> pdfs.json
+            fi
+            echo "  { \"path\": \"$clean_path\", \"url\": \"$full_url\", \"date\": \"$date\" }" >> pdfs.json
           done
+          echo "]" >> pdfs.json
 
-      - name: Commit and push pdfs.yaml
+      - name: Commit and push pdfs.json
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add pdfs.yaml
+          git add pdfs.json
 
           if git diff --cached --quiet; then
             echo "No changes to commit."
           else
-            git commit -m "Auto-generate pdfs.yaml with PDF paths and dates"
+            git commit -m "Auto-generate pdfs.json with PDF paths and dates"
             git push
           fi
         env:
