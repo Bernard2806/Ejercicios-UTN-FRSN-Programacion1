@@ -26,7 +26,7 @@ jobs:
           echo "[" > pdfs.json
           first=true
           find . -type f -iname '*.pdf' | while read file; do
-            date=$(git log -1 --format="%ci" -- "$file")
+            date=$(git log --diff-filter=A --format="%ci" -- "$file")
             clean_path="${file#./}"
             full_url="$repo_url/$clean_path"
             if [ "$first" = true ]; then
