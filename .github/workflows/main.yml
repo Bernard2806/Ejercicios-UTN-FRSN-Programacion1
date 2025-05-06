@@ -4,6 +4,9 @@ on:
   push:
     branches: [ main ]
 
+permissions:
+  contents: write  # ✅ Habilita escritura al repositorio
+
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -35,5 +38,12 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
           git add pdfs.yaml
-          git commit -m "Auto-generate pdfs.yaml with PDF paths and dates"
-          git push
+
+          if git diff --cached --quiet; then
+            echo "No changes to commit."
+          else
+            git commit -m "Auto-generate pdfs.yaml with PDF paths and dates"
+            git push
+          fi
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
