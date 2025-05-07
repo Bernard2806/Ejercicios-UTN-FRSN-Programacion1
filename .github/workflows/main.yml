@@ -22,7 +22,7 @@ jobs:
 
       - name: Find PDFs and generate JSON
         run: |
-          repo_url="https://github.com/${{ github.repository }}/blob/main"
+          repo_url="https://github.com/${{ github.repository }}/raw/main"
           echo "[" > pdfs.json
           first=true
           find . -type f -iname '*.pdf' | while read file; do
