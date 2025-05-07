@@ -9,10 +9,12 @@ int main()
     int array[5] = {10, 20, 30, 40, 50};         // Inicializa un array de enteros
     int size = sizeof(array) / sizeof(array[0]); // Calcula el tamaño del array
 
+    int *p = array; // Declara un puntero que apunta al primer elemento del array
+
     printf("El array es: ");
     mostrarArray(array, size); // Muestra el array
 
-    printf("\nEl maximo es: %d\n", encontrarMaxArrayConPunterosYSinIndices(array, size)); // Encuentra y muestra el máximo del array
+    printf("\nEl maximo es: %d\n", encontrarMaxArrayConPunterosYSinIndices(p, size)); // Encuentra y muestra el máximo del array
 
     return 0;
 }
