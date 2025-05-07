@@ -26,7 +26,14 @@ jobs:
           echo "[" > pdfs.json
           first=true
           find . -type f -iname '*.pdf' | while read file; do
-            date=$(git log -1 --format="%ci" -- "$file")
+            # Buscar el último commit que realmente modificó el contenido del archivo
+            date=$(git log --follow -p -- "$file" | grep -m 1 "Date:" | sed 's/Date:\s*//')
+            
+            # Si no se encuentra fecha (archivo nuevo sin commits), usar la fecha actual
+            if [ -z "$date" ]; then
+              date=$(date -u +"%Y-%m-%d %H:%M:%S %z")
+            fi
+            
             clean_path="${file#./}"
             full_url="$repo_url/$clean_path"
             if [ "$first" = true ]; then
