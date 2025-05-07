@@ -30,21 +30,38 @@ jobs:
           first=true
 
           find . -type f -iname '*.pdf' | while read file; do
-            # Obtener SHA del commit que agregó el archivo
-            commit_sha=$(git log --diff-filter=A --format="%H" -- "$file")
+            # Intentar extraer fecha de la carpeta Clase X (DD-MM)
+            folder_date=$(echo "$file" | grep -oE "Clase [0-9]+ \([0-9]{2}-[0-9]{2}\)" | grep -oE "[0-9]{2}-[0-9]{2}")
 
-            if [ -z "$commit_sha" ]; then
-              echo "No commit found for $file, skipping."
-              continue
-            fi
+            if [ -n "$folder_date" ]; then
+              # Si se encontró fecha en la carpeta, usarla para construir YYYY-MM-DD
+              year=$(date +"%Y")
+              day="${folder_date:0:2}"
+              month="${folder_date:3:2}"
+              date="${year}-${month}-${day}T00:00:00Z"
+              echo "Usando fecha de carpeta para $file: $date"
+            else
+              # Si no se encontró, buscar commit que agregó el archivo
+              commit_sha=$(git log --diff-filter=A --format="%H" -- "$file")
 
-            # Llamar a la API de GitHub para obtener la fecha del commit
-            api_url="https://api.github.com/repos/${{ github.repository }}/commits/$commit_sha"
-            date=$(curl -s -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" -H "Accept: application/vnd.github+json" "$api_url" | jq -r '.commit.committer.date')
+              if [ -z "$commit_sha" ]; then
+                echo "No commit found for $file, buscando último commit de modificación."
+                commit_sha=$(git log -1 --format="%H" -- "$file")
+              fi
 
-            # Si no se encontró fecha, usar fecha actual
-            if [ -z "$date" ] || [ "$date" = "null" ]; then
-              date=$(date -u +"%Y-%m-%dT%H:%M:%SZ")
+              if [ -z "$commit_sha" ]; then
+                echo "No commit encontrado para $file, usando fecha actual."
+                date=$(date -u +"%Y-%m-%dT%H:%M:%SZ")
+              else
+                # Llamar a la API de GitHub para obtener la fecha del commit
+                api_url="https://api.github.com/repos/${{ github.repository }}/commits/$commit_sha"
+                date=$(curl -s -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" -H "Accept: application/vnd.github+json" "$api_url" | jq -r '.commit.committer.date')
+
+                if [ -z "$date" ] || [ "$date" = "null" ]; then
+                  echo "No se pudo obtener la fecha desde la API, usando fecha actual."
+                  date=$(date -u +"%Y-%m-%dT%H:%M:%SZ")
+                fi
+              fi
             fi
 
             clean_path="${file#./}"
