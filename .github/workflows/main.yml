@@ -5,7 +5,7 @@ on:
     branches: [main]
 
 permissions:
-  contents: write # ✅ Habilita escritura al repositorio
+  contents: write
 
 jobs:
   build:
@@ -30,8 +30,16 @@ jobs:
           first=true
 
           find . -type f -iname '*.pdf' | while read file; do
-            # Intentar extraer fecha de la carpeta Clase X (DD-MM)
-            folder_date=$(echo "$file" | grep -oE "Clase [0-9]+ \([0-9]{2}-[0-9]{2}\)" | grep -oE "[0-9]{2}-[0-9]{2}")
+            # Intentar extraer la carpeta que contiene Clase X (DD-MM)
+            folder_match=$(echo "$file" | grep -oE "Clase [0-9]+ \([0-9]{2}-[0-9]{2}\)")
+            class_name=""
+            folder_date=""
+
+            if [ -n "$folder_match" ]; then
+              # Extraer Clase X y DD-MM
+              class_name=$(echo "$folder_match" | grep -oE "Clase [0-9]+")
+              folder_date=$(echo "$folder_match" | grep -oE "[0-9]{2}-[0-9]{2}")
+            fi
 
             if [ -n "$folder_date" ]; then
               # Si se encontró fecha en la carpeta, usarla para construir YYYY-MM-DD
@@ -73,7 +81,12 @@ jobs:
               echo "," >> pdfs.json
             fi
 
-            echo "  { \"url\": \"$full_url\", \"date\": \"$date\" }" >> pdfs.json
+            # Generar JSON con campo adicional "clase" (si existe)
+            if [ -n "$class_name" ]; then
+              echo "  { \"url\": \"$full_url\", \"date\": \"$date\", \"class\": \"$class_name\" }" >> pdfs.json
+            else
+              echo "  { \"url\": \"$full_url\", \"date\": \"$date\" }" >> pdfs.json
+            fi
           done
 
           echo "]" >> pdfs.json
@@ -87,7 +100,7 @@ jobs:
           if git diff --cached --quiet; then
             echo "No changes to commit."
           else
-            git commit -m "Auto-generate pdfs.json with PDF URLs and dates"
+            git commit -m "Auto-generate pdfs.json with PDF URLs, dates and class"
             git push
           fi
         env:
