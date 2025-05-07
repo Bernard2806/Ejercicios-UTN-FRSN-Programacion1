@@ -22,11 +22,11 @@ jobs:
 
       - name: Find PDFs and generate JSON
         run: |
-          repo_url="https://github.com/${{ github.repository }}/raw/main"
+          repo_url="https://github.com/${{ github.repository }}/blob/main"
           echo "[" > pdfs.json
           first=true
           find . -type f -iname '*.pdf' | while read file; do
-            date=$(git log --diff-filter=A --format="%ci" -- "$file")
+            date=$(git log -1 --format="%ci" -- "$file")
             clean_path="${file#./}"
             full_url="$repo_url/$clean_path"
             if [ "$first" = true ]; then
