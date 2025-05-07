@@ -20,29 +20,45 @@ jobs:
         with:
           node-version: "20"
 
+      - name: Install jq
+        run: sudo apt-get install -y jq
+
       - name: Find PDFs and generate JSON
         run: |
           repo_url="https://github.com/${{ github.repository }}/blob/main"
           echo "[" > pdfs.json
           first=true
+
           find . -type f -iname '*.pdf' | while read file; do
-            # Buscar el último commit que realmente modificó el contenido del archivo
-            date=$(git log --follow -p -- "$file" | grep -m 1 "Date:" | sed 's/Date:\s*//')
-            
-            # Si no se encuentra fecha (archivo nuevo sin commits), usar la fecha actual
-            if [ -z "$date" ]; then
-              date=$(date -u +"%Y-%m-%d %H:%M:%S %z")
+            # Obtener SHA del commit que agregó el archivo
+            commit_sha=$(git log --diff-filter=A --format="%H" -- "$file")
+
+            if [ -z "$commit_sha" ]; then
+              echo "No commit found for $file, skipping."
+              continue
             fi
-            
+
+            # Llamar a la API de GitHub para obtener la fecha del commit
+            api_url="https://api.github.com/repos/${{ github.repository }}/commits/$commit_sha"
+            date=$(curl -s -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" -H "Accept: application/vnd.github+json" "$api_url" | jq -r '.commit.committer.date')
+
+            # Si no se encontró fecha, usar fecha actual
+            if [ -z "$date" ] || [ "$date" = "null" ]; then
+              date=$(date -u +"%Y-%m-%dT%H:%M:%SZ")
+            fi
+
             clean_path="${file#./}"
             full_url="$repo_url/$clean_path"
+
             if [ "$first" = true ]; then
               first=false
             else
               echo "," >> pdfs.json
             fi
-            echo "  { \"path\": \"$clean_path\", \"url\": \"$full_url\", \"date\": \"$date\" }" >> pdfs.json
+
+            echo "  { \"url\": \"$full_url\", \"date\": \"$date\" }" >> pdfs.json
           done
+
           echo "]" >> pdfs.json
 
       - name: Commit and push pdfs.json
@@ -54,7 +70,7 @@ jobs:
           if git diff --cached --quiet; then
             echo "No changes to commit."
           else
-            git commit -m "Auto-generate pdfs.json with PDF paths and dates"
+            git commit -m "Auto-generate pdfs.json with PDF URLs and dates"
             git push
           fi
         env:
