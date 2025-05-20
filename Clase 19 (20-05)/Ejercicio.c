@@ -143,6 +143,24 @@ int buscarLibroBinario(Libro biblioteca[], int cantidadLibros, char isbn[])
     }
 
     printf("Buscando el libro con ISBN '%s'...\n", isbn);
+
+    int izquierda = 0;
+    int derecha = cantidadLibros - 1;
+
+    while (izquierda <= derecha)
+    {
+        int medio = izquierda + (derecha - izquierda) / 2;
+
+        if (biblioteca->isbn[medio] == isbn)
+            return medio;
+
+        if (biblioteca->isbn[medio] < isbn)
+            izquierda = medio + 1;
+        else
+            derecha = medio - 1;
+    }
+
+    return -1;
 }
 
 int estaBibliotecaOrdenadaPorISBN(Libro biblioteca[], int cantidadLibros)
