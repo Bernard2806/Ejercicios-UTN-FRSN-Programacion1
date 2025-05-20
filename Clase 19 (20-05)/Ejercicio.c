@@ -242,8 +242,10 @@ void logicaMenu(int opcion, Libro biblioteca[], int *cantidadLibros)
         crearLibro(biblioteca, cantidadLibros);
         break;
     case 2:
+        listarLibros(biblioteca, *cantidadLibros);
         break;
     case 3:
+        prestarLibro(biblioteca, *cantidadLibros);
         break;
     case 4:
         break;
