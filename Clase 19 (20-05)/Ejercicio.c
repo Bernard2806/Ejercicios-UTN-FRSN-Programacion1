@@ -23,6 +23,7 @@ void listarLibros(Libro biblioteca[], int cantidadLibros);
 void prestarLibro(Libro biblioteca[], int cantidadLibros);
 void modificarLibro(Libro biblioteca[], int cantidadLibros);
 void ordenarBibliotecaPorISBN(Libro biblioteca[], int cantidadLibros); // Función para ordenar antes de buscar
+int estaBibliotecaOrdenadaPorISBN(Libro biblioteca[], int cantidadLibros);
 int buscarLibroBinario(Libro biblioteca[], int cantidadLibros, char isbn[]);
 
 void clearConsole();
@@ -102,6 +103,60 @@ void crearLibro(Libro biblioteca[], int *cantidadLibros)
     printf("Libro creado exitosamente.\n");
 }
 
+void prestarLibro(Libro biblioteca[], int cantidadLibros)
+{
+    char isbn[20];
+    printf("Ingrese el ISBN del libro a prestar: ");
+    getchar(); // Limpiar el buffer
+    fgets(isbn, sizeof(isbn), stdin);
+    isbn[strcspn(isbn, "\n")] = 0;
+
+    int index = buscarLibroBinario(biblioteca, cantidadLibros, isbn);
+    if (index != -1)
+    {
+        if (biblioteca[index].prestado == 0)
+        {
+            biblioteca[index].prestado = 1;
+            printf("El libro '%s' ha sido prestado.\n", biblioteca[index].titulo);
+        }
+        else
+        {
+            printf("El libro '%s' ya está prestado.\n", biblioteca[index].titulo);
+        }
+    }
+    else
+    {
+        printf("No se encontró un libro con el ISBN '%s'.\n", isbn);
+    }
+}
+
+int buscarLibroBinario(Libro biblioteca[], int cantidadLibros, char isbn[])
+{
+    if (estaBibliotecaOrdenadaPorISBN(biblioteca, cantidadLibros))
+    {
+        printf("La biblioteca no está ordenada por ISBN. Ordenando...\n");
+        ordenarBibliotecaPorISBN(biblioteca, cantidadLibros);
+    }
+    else
+    {
+        printf("La biblioteca ya está ordenada por ISBN.\n");
+    }
+
+    printf("Buscando el libro con ISBN '%s'...\n", isbn);
+}
+
+int estaBibliotecaOrdenadaPorISBN(Libro biblioteca[], int cantidadLibros)
+{
+    for (int i = 0; i < cantidadLibros - 1; i++)
+    {
+        if (biblioteca[i].isbn > biblioteca[i + 1].isbn)
+        {
+            return 1; // No está ordenado
+        }
+    }
+    return 0; // Está ordenado
+}
+
 void listarLibros(Libro biblioteca[], int cantidadLibros)
 {
     for (int i = 0; i < cantidadLibros; i++)
@@ -112,6 +167,24 @@ void listarLibros(Libro biblioteca[], int cantidadLibros)
         printf("Autor: %s\n", biblioteca[i].autor);
         printf("Editorial: %s\n", biblioteca[i].editorial);
         printf("Estado: %s\n", biblioteca[i].prestado ? "Prestado" : "Disponible");
+    }
+}
+
+void ordenarBibliotecaPorISBN(Libro biblioteca[], int cantidadLibros)
+{
+    Libro temp;
+
+    for (int i = 0; i < cantidadLibros - 1; i++)
+    {
+        for (int j = 0; j < cantidadLibros - i - 1; j++)
+        {
+            if (biblioteca[j].isbn > biblioteca[j + 1].isbn)
+            {
+                temp = biblioteca[j];
+                biblioteca[j] = biblioteca[j + 1];
+                biblioteca[j + 1] = temp;
+            }
+        }
     }
 }
 
