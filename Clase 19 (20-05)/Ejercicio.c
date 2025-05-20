@@ -8,7 +8,7 @@ const int MAX_CANTIDAD_LIBROS = 100;
 typedef struct
 {
     char titulo[100];
-    char isbn[20];
+    int isbn;
     char autor[50];
     char editorial[50];
     int prestado; // 0: disponible, 1: prestado
@@ -24,7 +24,7 @@ void prestarLibro(Libro biblioteca[], int cantidadLibros);
 void modificarLibro(Libro biblioteca[], int cantidadLibros);
 void ordenarBibliotecaPorISBN(Libro biblioteca[], int cantidadLibros); // Función para ordenar antes de buscar
 int estaBibliotecaOrdenadaPorISBN(Libro biblioteca[], int cantidadLibros);
-int buscarLibroBinario(Libro biblioteca[], int cantidadLibros, char isbn[]);
+int buscarLibroBinario(Libro biblioteca[], int cantidadLibros, int isbn);
 
 void clearConsole();
 
@@ -46,19 +46,19 @@ int main()
 void inicializarBiblioteca(Libro biblioteca[], int *cantidadLibros)
 {
     strcpy(biblioteca[0].titulo, "Don Quijote de la Mancha");
-    strcpy(biblioteca[0].isbn, "1234");
+    biblioteca[0].isbn = 1234;
     strcpy(biblioteca[0].autor, "Miguel de Cervantes");
     strcpy(biblioteca[0].editorial, "Planeta");
     biblioteca[0].prestado = 0;
 
     strcpy(biblioteca[1].titulo, "Cien años de soledad");
-    strcpy(biblioteca[1].isbn, "2345");
+    biblioteca[1].isbn = 2345;
     strcpy(biblioteca[1].autor, "Gabriel García Márquez");
     strcpy(biblioteca[1].editorial, "Planeta");
     biblioteca[1].prestado = 0;
 
     strcpy(biblioteca[2].titulo, "El principito");
-    strcpy(biblioteca[2].isbn, "3456");
+    biblioteca[2].isbn = 3456;
     strcpy(biblioteca[2].autor, "Antoine de Saint-Exupéry");
     strcpy(biblioteca[2].editorial, "Salamandra");
     biblioteca[2].prestado = 0;
@@ -79,13 +79,16 @@ void crearLibro(Libro biblioteca[], int *cantidadLibros)
     Libro nuevoLibro;
 
     printf("Ingrese el título del libro: ");
+
     getchar(); // Limpiar el buffer
+
     fgets(nuevoLibro.titulo, sizeof(nuevoLibro.titulo), stdin);
     nuevoLibro.titulo[strcspn(nuevoLibro.titulo, "\n")] = 0;
 
     printf("Ingrese el ISBN del libro: ");
-    fgets(nuevoLibro.isbn, sizeof(nuevoLibro.isbn), stdin);
-    nuevoLibro.isbn[strcspn(nuevoLibro.isbn, "\n")] = 0;
+    scanf("%s", nuevoLibro.isbn);
+
+    getchar(); // Limpiar el buffer
 
     printf("Ingrese el autor del libro: ");
     fgets(nuevoLibro.autor, sizeof(nuevoLibro.autor), stdin);
@@ -105,13 +108,13 @@ void crearLibro(Libro biblioteca[], int *cantidadLibros)
 
 void prestarLibro(Libro biblioteca[], int cantidadLibros)
 {
-    char isbn[20];
+    int isbn;
     printf("Ingrese el ISBN del libro a prestar: ");
+    scanf("%d", isbn);
     getchar(); // Limpiar el buffer
-    fgets(isbn, sizeof(isbn), stdin);
-    isbn[strcspn(isbn, "\n")] = 0;
 
     int index = buscarLibroBinario(biblioteca, cantidadLibros, isbn);
+
     if (index != -1)
     {
         if (biblioteca[index].prestado == 0)
@@ -130,7 +133,7 @@ void prestarLibro(Libro biblioteca[], int cantidadLibros)
     }
 }
 
-int buscarLibroBinario(Libro biblioteca[], int cantidadLibros, char isbn[])
+int buscarLibroBinario(Libro biblioteca[], int cantidadLibros, int isbn)
 {
     if (estaBibliotecaOrdenadaPorISBN(biblioteca, cantidadLibros))
     {
