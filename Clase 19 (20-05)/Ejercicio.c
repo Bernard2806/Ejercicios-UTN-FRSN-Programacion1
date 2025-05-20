@@ -26,8 +26,6 @@ void ordenarBibliotecaPorISBN(Libro biblioteca[], int cantidadLibros); // Funci�
 int estaBibliotecaOrdenadaPorISBN(Libro biblioteca[], int cantidadLibros);
 int buscarLibroBinario(Libro biblioteca[], int cantidadLibros, int isbn);
 
-void clearConsole();
-
 int main()
 {
     Libro biblioteca[MAX_CANTIDAD_LIBROS];
@@ -68,7 +66,6 @@ void inicializarBiblioteca(Libro biblioteca[], int *cantidadLibros)
 
 void crearLibro(Libro biblioteca[], int *cantidadLibros)
 {
-    clearConsole();
     printf("===== CREAR LIBRO ===== \n\n");
     if (*cantidadLibros >= MAX_CANTIDAD_LIBROS)
     {
@@ -154,10 +151,10 @@ int buscarLibroBinario(Libro biblioteca[], int cantidadLibros, int isbn)
     {
         int medio = izquierda + (derecha - izquierda) / 2;
 
-        if (biblioteca->isbn[medio] == isbn)
+        if (biblioteca[medio].isbn == isbn)
             return medio;
 
-        if (biblioteca->isbn[medio] < isbn)
+        if (biblioteca[medio].isbn < isbn)
             izquierda = medio + 1;
         else
             derecha = medio - 1;
@@ -184,7 +181,7 @@ void listarLibros(Libro biblioteca[], int cantidadLibros)
     {
         printf("Libro %d:\n", i + 1);
         printf("Título: %s\n", biblioteca[i].titulo);
-        printf("ISBN: %s\n", biblioteca[i].isbn);
+        printf("ISBN: %d\n", biblioteca[i].isbn);
         printf("Autor: %s\n", biblioteca[i].autor);
         printf("Editorial: %s\n", biblioteca[i].editorial);
         printf("Estado: %s\n", biblioteca[i].prestado ? "Prestado" : "Disponible");
@@ -213,16 +210,15 @@ int mostrarMenu()
 {
     int opcion;
 
-    clearConsole();
-
     printf("===== SISTEMA DE BIBLIOTECA ===== \n\n");
-    printf("\t1. Crear libro\n");
-    printf("\t2. Listar todos los libros\n");
-    printf("\t3. Prestar un libro\n");
-    printf("\t4. Modificar un libro\n");
-    printf("\t5. Buscar libro por ISBN\n");
-    printf("\t6. Salir\n");
-    printf("\n==================================\n\n");
+    printf("\t1. Crear libro \n");
+    printf("\t2. Listar todos los libros \n");
+    printf("\t3. Prestar un libro \n");
+    printf("\t4. Modificar un libro \n");
+    printf("\t5. Buscar libro por ISBN \n");
+    printf("\t6. Salir \n");
+    printf("\n================================== \n\n");
+
     printf("Ingrese una opción: ");
 
     scanf("%d", &opcion);
@@ -238,7 +234,6 @@ int mostrarMenu()
 
 void logicaMenu(int opcion, Libro biblioteca[], int *cantidadLibros)
 {
-    clearConsole();
     switch (opcion)
     {
     case 1:
@@ -261,14 +256,4 @@ void logicaMenu(int opcion, Libro biblioteca[], int *cantidadLibros)
         printf("Error intentendible, opcion no valida\n");
         break;
     }
-}
-
-// Función para limpiar la consola
-void clearConsole()
-{
-#ifdef _WIN32
-    system("cls");
-#else
-    system("clear");
-#endif
 }
