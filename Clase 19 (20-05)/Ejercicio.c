@@ -22,9 +22,10 @@ void crearLibro(Libro biblioteca[], int *cantidadLibros);
 void listarLibros(Libro biblioteca[], int cantidadLibros);
 void prestarLibro(Libro biblioteca[], int cantidadLibros);
 void modificarLibro(Libro biblioteca[], int cantidadLibros);
-void ordenarBibliotecaPorISBN(Libro biblioteca[], int cantidadLibros); // Función para ordenar antes de buscar
+void ordenarBibliotecaPorISBN(Libro biblioteca[], int cantidadLibros);
 int estaBibliotecaOrdenadaPorISBN(Libro biblioteca[], int cantidadLibros);
 int buscarLibroBinario(Libro biblioteca[], int cantidadLibros, int isbn);
+void buscarLibroPorISBN(Libro biblioteca[], int cantidadLibros);
 
 int main()
 {
@@ -33,9 +34,19 @@ int main()
 
     inicializarBiblioteca(biblioteca, &cantidadLibros);
 
-    while (1)
+    int continuar = 1;
+
+    while (continuar)
     {
-        logicaMenu(mostrarMenu(), biblioteca, &cantidadLibros);
+        int opcion = mostrarMenu();
+        if (opcion == 6)
+        {
+            continuar = 0;
+        }
+        else
+        {
+            logicaMenu(opcion, biblioteca, &cantidadLibros);
+        }
     }
 
     return 0;
@@ -66,7 +77,7 @@ void inicializarBiblioteca(Libro biblioteca[], int *cantidadLibros)
 
 void crearLibro(Libro biblioteca[], int *cantidadLibros)
 {
-    printf("===== CREAR LIBRO ===== \n\n");
+    printf("\n===== CREAR LIBRO ===== \n\n");
     if (*cantidadLibros >= MAX_CANTIDAD_LIBROS)
     {
         printf("No se pueden agregar más libros. Capacidad máxima alcanzada.\n");
@@ -83,7 +94,7 @@ void crearLibro(Libro biblioteca[], int *cantidadLibros)
     nuevoLibro.titulo[strcspn(nuevoLibro.titulo, "\n")] = 0;
 
     printf("Ingrese el ISBN del libro: ");
-    scanf("%s", nuevoLibro.isbn);
+    scanf("%d", &nuevoLibro.isbn); // Corregido: & añadido para la variable
 
     getchar(); // Limpiar el buffer
 
@@ -103,12 +114,38 @@ void crearLibro(Libro biblioteca[], int *cantidadLibros)
     printf("Libro creado exitosamente.\n");
 }
 
+void buscarLibroPorISBN(Libro biblioteca[], int cantidadLibros)
+{
+    printf("\n===== BUSCAR LIBRO POR ISBN ===== \n\n");
+    int isbn;
+    printf("Ingrese el ISBN del libro a buscar: ");
+    scanf("%d", &isbn);
+    getchar(); // Limpiar el buffer
+
+    int index = buscarLibroBinario(biblioteca, cantidadLibros, isbn);
+
+    if (index != -1)
+    {
+        printf("\nInformación del libro:\n");
+        printf("Título: %s\n", biblioteca[index].titulo);
+        printf("ISBN: %d\n", biblioteca[index].isbn);
+        printf("Autor: %s\n", biblioteca[index].autor);
+        printf("Editorial: %s\n", biblioteca[index].editorial);
+        printf("Estado: %s\n", biblioteca[index].prestado ? "Prestado" : "Disponible");
+    }
+    else
+    {
+        printf("No se encontró un libro con el ISBN %d.\n", isbn);
+    }
+}
+
 void prestarLibro(Libro biblioteca[], int cantidadLibros)
 {
+    printf("\n===== PRESTAR LIBRO ===== \n\n");
     int isbn;
     printf("Ingrese el ISBN del libro a prestar: ");
-    scanf("%d", isbn);
-    getchar(); // Limpiar el buffer
+    scanf("%d", &isbn); // Corregido: & añadido para la variable
+    getchar();          // Limpiar el buffer
 
     int index = buscarLibroBinario(biblioteca, cantidadLibros, isbn);
 
@@ -126,13 +163,41 @@ void prestarLibro(Libro biblioteca[], int cantidadLibros)
     }
     else
     {
-        printf("No se encontró un libro con el ISBN '%s'.\n", isbn);
+        printf("No se encontró un libro con el ISBN %d.\n", isbn); // Corregido: formato de impresión
+    }
+}
+
+void devolverLibro(Libro biblioteca[], int cantidadLibros)
+{
+    printf("\n===== DEVOLVER LIBRO ===== \n\n");
+    int isbn;
+    printf("Ingrese el ISBN del libro a devolver: ");
+    scanf("%d", &isbn);
+    getchar(); // Limpiar el buffer
+
+    int index = buscarLibroBinario(biblioteca, cantidadLibros, isbn);
+
+    if (index != -1)
+    {
+        if (biblioteca[index].prestado == 1)
+        {
+            biblioteca[index].prestado = 0;
+            printf("El libro '%s' ha sido devuelto.\n", biblioteca[index].titulo);
+        }
+        else
+        {
+            printf("El libro '%s' no estaba prestado.\n", biblioteca[index].titulo);
+        }
+    }
+    else
+    {
+        printf("No se encontró un libro con el ISBN %d.\n", isbn);
     }
 }
 
 int buscarLibroBinario(Libro biblioteca[], int cantidadLibros, int isbn)
 {
-    if (estaBibliotecaOrdenadaPorISBN(biblioteca, cantidadLibros))
+    if (!estaBibliotecaOrdenadaPorISBN(biblioteca, cantidadLibros)) // Corregido: lógica invertida
     {
         printf("La biblioteca no está ordenada por ISBN. Ordenando...\n");
         ordenarBibliotecaPorISBN(biblioteca, cantidadLibros);
@@ -142,7 +207,7 @@ int buscarLibroBinario(Libro biblioteca[], int cantidadLibros, int isbn)
         printf("La biblioteca ya está ordenada por ISBN.\n");
     }
 
-    printf("Buscando el libro con ISBN '%s'...\n", isbn);
+    printf("Buscando el libro con ISBN %d...\n", isbn); // Corregido: formato de impresión
 
     int izquierda = 0;
     int derecha = cantidadLibros - 1;
@@ -169,14 +234,26 @@ int estaBibliotecaOrdenadaPorISBN(Libro biblioteca[], int cantidadLibros)
     {
         if (biblioteca[i].isbn > biblioteca[i + 1].isbn)
         {
-            return 1; // No está ordenado
+            return 0; // No está ordenado
         }
     }
-    return 0; // Está ordenado
+    return 1; // Está ordenado
 }
 
 void listarLibros(Libro biblioteca[], int cantidadLibros)
 {
+    if (!estaBibliotecaOrdenadaPorISBN(biblioteca, cantidadLibros))
+    {
+        ordenarBibliotecaPorISBN(biblioteca, cantidadLibros);
+    }
+
+    printf("\n===== LISTADO DE LIBROS ===== \n\n");
+    if (cantidadLibros == 0)
+    {
+        printf("No hay libros en la biblioteca.\n");
+        return;
+    }
+
     for (int i = 0; i < cantidadLibros; i++)
     {
         printf("Libro %d:\n", i + 1);
@@ -184,7 +261,90 @@ void listarLibros(Libro biblioteca[], int cantidadLibros)
         printf("ISBN: %d\n", biblioteca[i].isbn);
         printf("Autor: %s\n", biblioteca[i].autor);
         printf("Editorial: %s\n", biblioteca[i].editorial);
-        printf("Estado: %s\n", biblioteca[i].prestado ? "Prestado" : "Disponible");
+        printf("Estado: %s\n\n", biblioteca[i].prestado ? "Prestado" : "Disponible");
+    }
+}
+
+void modificarLibro(Libro biblioteca[], int cantidadLibros)
+{
+    printf("\n===== MODIFICAR LIBRO ===== \n\n");
+    int isbn;
+    printf("Ingrese el ISBN del libro a modificar: ");
+    scanf("%d", &isbn);
+    getchar(); // Limpiar el buffer
+
+    int index = buscarLibroBinario(biblioteca, cantidadLibros, isbn);
+
+    if (index != -1)
+    {
+        printf("\nLibro encontrado. Datos actuales:\n");
+        printf("Título: %s\n", biblioteca[index].titulo);
+        printf("ISBN: %d\n", biblioteca[index].isbn);
+        printf("Autor: %s\n", biblioteca[index].autor);
+        printf("Editorial: %s\n", biblioteca[index].editorial);
+        printf("Estado: %s\n\n", biblioteca[index].prestado ? "Prestado" : "Disponible");
+
+        int opcionModificar;
+        printf("¿Qué desea modificar?\n");
+        printf("1. Título\n");
+        printf("2. ISBN\n");
+        printf("3. Autor\n");
+        printf("4. Editorial\n");
+        printf("5. Estado de préstamo\n");
+        printf("6. Cancelar\n");
+        printf("Seleccione una opción: ");
+        scanf("%d", &opcionModificar);
+        getchar(); // Limpiar el buffer
+
+        switch (opcionModificar)
+        {
+        case 1:
+            printf("Ingrese el nuevo título: ");
+            fgets(biblioteca[index].titulo, sizeof(biblioteca[index].titulo), stdin);
+            biblioteca[index].titulo[strcspn(biblioteca[index].titulo, "\n")] = 0;
+            break;
+        case 2:
+            printf("Ingrese el nuevo ISBN: ");
+            scanf("%d", &biblioteca[index].isbn);
+            getchar(); // Limpiar el buffer
+            // Después de cambiar el ISBN, la biblioteca podría no estar ordenada
+            ordenarBibliotecaPorISBN(biblioteca, cantidadLibros);
+            break;
+        case 3:
+            printf("Ingrese el nuevo autor: ");
+            fgets(biblioteca[index].autor, sizeof(biblioteca[index].autor), stdin);
+            biblioteca[index].autor[strcspn(biblioteca[index].autor, "\n")] = 0;
+            break;
+        case 4:
+            printf("Ingrese la nueva editorial: ");
+            fgets(biblioteca[index].editorial, sizeof(biblioteca[index].editorial), stdin);
+            biblioteca[index].editorial[strcspn(biblioteca[index].editorial, "\n")] = 0;
+            break;
+        case 5:
+            if (biblioteca[index].prestado == 0)
+            {
+                biblioteca[index].prestado = 1;
+                printf("El libro ahora está marcado como prestado.\n");
+            }
+            else
+            {
+                biblioteca[index].prestado = 0;
+                printf("El libro ahora está marcado como disponible.\n");
+            }
+            break;
+        case 6:
+            printf("Operación cancelada.\n");
+            return;
+        default:
+            printf("Opción inválida.\n");
+            return;
+        }
+
+        printf("Libro modificado exitosamente.\n");
+    }
+    else
+    {
+        printf("No se encontró un libro con el ISBN %d.\n", isbn);
     }
 }
 
@@ -210,7 +370,7 @@ int mostrarMenu()
 {
     int opcion;
 
-    printf("===== SISTEMA DE BIBLIOTECA ===== \n\n");
+    printf("\n===== SISTEMA DE BIBLIOTECA ===== \n\n");
     printf("\t1. Crear libro \n");
     printf("\t2. Listar todos los libros \n");
     printf("\t3. Prestar un libro \n");
@@ -246,14 +406,17 @@ void logicaMenu(int opcion, Libro biblioteca[], int *cantidadLibros)
         prestarLibro(biblioteca, *cantidadLibros);
         break;
     case 4:
+        modificarLibro(biblioteca, *cantidadLibros);
         break;
     case 5:
+        buscarLibroPorISBN(biblioteca, *cantidadLibros);
         break;
     case 6:
         printf("Saliendo del sistema...\n");
+        exit(0);
         break;
     default:
-        printf("Error intentendible, opcion no valida\n");
+        printf("Error inentendible, opción no válida\n");
         break;
     }
 }
