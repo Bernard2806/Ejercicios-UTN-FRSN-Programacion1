@@ -6,7 +6,6 @@
 
 // Funciones de uso recurrente
 void mostrarArray(float array[], int size);
-void clearConsole();
 
 // Funciones para imprimir arte ASCII y menú
 void imprimirArteAscii();
@@ -45,8 +44,6 @@ void logicaMenu(int opcion, float notas[])
     memcpy(notasCopia, notas, sizeof(notas)); // Copia el contenido del array original al array copia
 
     int comparaciones = 0, intercambios = 0; // Inicializa contadores de comparaciones e intercambios
-
-    clearConsole(); // Limpia la consola
 
     // Lógica del menú según la opción seleccionada
     switch (opcion)
@@ -175,7 +172,6 @@ int imprimirMenu()
 
     do
     {
-        clearConsole(); // Limpia la consola
         printf("====== MENÚ ======\n");
         printf("1. Ordenar usando Bubble Sort\n");
         printf("2. Ordenar usando Insertion Sort\n");
@@ -197,22 +193,10 @@ void imprimirInicio()
     printf("\n\n");
     printf("Presiona cualquier tecla para continuar...\n");
     getchar();      // Espera a que el usuario presione una tecla
-    clearConsole(); // Limpia la consola
-}
-
-void clearConsole()
-{
-#ifdef _WIN32
-    system("cls");
-#else
-    system("clear");
-#endif
 }
 
 void imprimirArteAscii()
 {
-    clearConsole(); // Limpia la consola
-
     // Arte ASCII
     printf(
         "           _                  _ _                             _         ____          _                            _            _        \n"
