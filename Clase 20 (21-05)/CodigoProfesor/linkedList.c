@@ -19,6 +19,49 @@ typedef struct Nodo
     struct Nodo *siguiente; // Puntero al siguiente nodo en la lista
 } Nodo;
 
+// Prototipos de Funciones
+Nodo *crearNodo(int valor);
+void insertarAlInicio(Nodo **cabeza, int valor);
+void insertarAlFinal(Nodo **cabeza, int valor);
+int buscar(Nodo *cabeza, int valor);
+int eliminar(Nodo **cabeza, int valor);
+void imprimirLista(Nodo *cabeza);
+void liberarLista(Nodo **cabeza);
+
+/**
+ * Función principal para demostrar el uso de la lista enlazada
+ */
+int main()
+{
+    Nodo *lista = NULL; // Inicializar una lista vacía
+
+    // Insertar algunos valores
+    insertarAlFinal(&lista, 10);
+    insertarAlFinal(&lista, 20);
+    insertarAlInicio(&lista, 5);
+    insertarAlFinal(&lista, 30);
+
+    // Imprimir la lista
+    imprimirLista(lista);
+
+    // Buscar valores
+    printf("¿El valor 20 está en la lista? %s\n",
+           buscar(lista, 20) ? "Sí" : "No");
+    printf("¿El valor 25 está en la lista? %s\n",
+           buscar(lista, 25) ? "Sí" : "No");
+
+    // Eliminar un valor
+    printf("Eliminando el valor 20...\n");
+    eliminar(&lista, 20);
+    imprimirLista(lista);
+
+    // Liberar la memoria al final
+    liberarLista(&lista);
+    printf("Memoria liberada\n");
+
+    return 0;
+}
+
 /**
  * Función para crear un nuevo nodo
  * @param valor El valor entero a almacenar en el nodo
@@ -199,38 +242,4 @@ void liberarLista(Nodo **cabeza)
 
     // Establecer la cabeza como NULL (lista vacía)
     *cabeza = NULL;
-}
-
-/**
- * Función principal para demostrar el uso de la lista enlazada
- */
-int main()
-{
-    Nodo *lista = NULL; // Inicializar una lista vacía
-
-    // Insertar algunos valores
-    insertarAlFinal(&lista, 10);
-    insertarAlFinal(&lista, 20);
-    insertarAlInicio(&lista, 5);
-    insertarAlFinal(&lista, 30);
-
-    // Imprimir la lista
-    imprimirLista(lista);
-
-    // Buscar valores
-    printf("¿El valor 20 está en la lista? %s\n",
-           buscar(lista, 20) ? "Sí" : "No");
-    printf("¿El valor 25 está en la lista? %s\n",
-           buscar(lista, 25) ? "Sí" : "No");
-
-    // Eliminar un valor
-    printf("Eliminando el valor 20...\n");
-    eliminar(&lista, 20);
-    imprimirLista(lista);
-
-    // Liberar la memoria al final
-    liberarLista(&lista);
-    printf("Memoria liberada\n");
-
-    return 0;
 }
