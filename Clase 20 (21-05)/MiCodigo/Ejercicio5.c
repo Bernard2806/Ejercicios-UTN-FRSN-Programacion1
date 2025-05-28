@@ -79,6 +79,13 @@ int main()
         printf("No se elimino ningún estudiante.\n");
     }
 
+    // Contar estudiantes aprobados y desaprobados
+    int totalAprobados = totalEstudiantesAprobados(listaEstudiantes);
+    int totalDesaprobados = totalEstudiantesDesaprobados(listaEstudiantes);
+
+    printf("\nTotal de estudiantes aprobados: %d\n", totalAprobados);
+    printf("Total de estudiantes desaprobados: %d\n", totalDesaprobados);
+
     // Liberar memoria
     liberarLista(&listaEstudiantes);
 
@@ -229,4 +236,34 @@ void eliminarEstudiantePorLegajo(Nodo **cabeza, int legajo)
 
     free(actual);
     printf("Estudiante con legajo %d eliminado.\n", legajo);
+}
+
+int totalEstudiantesAprobados(Nodo *cabeza)
+{
+    int contador = 0;
+    Nodo *actual = cabeza;
+    while (actual != NULL)
+    {
+        if (actual->estudiante.notaDefinitiva >= 6.0)
+        {
+            contador++;
+        }
+        actual = actual->siguiente;
+    }
+    return contador;
+}
+
+int totalEstudiantesDesaprobados(Nodo *cabeza)
+{
+    int contador = 0;
+    Nodo *actual = cabeza;
+    while (actual != NULL)
+    {
+        if (actual->estudiante.notaDefinitiva < 6.0)
+        {
+            contador++;
+        }
+        actual = actual->siguiente;
+    }
+    return contador;
 }
