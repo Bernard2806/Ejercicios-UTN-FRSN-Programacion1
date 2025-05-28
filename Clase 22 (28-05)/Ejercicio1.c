@@ -37,8 +37,14 @@ int main(){
     // Buscar un empleado por legajo
     buscarEmpleadoPorLegajo(empleados, numEmpleados, legajoBuscado);
 
-    aumentarSueldosEmpleados(empleados, numEmpleados, 10.0); // Aumentar sueldos en un 10%
+    printf("Ingrese el porcentaje de aumento de sueldo: ");
+    float porcentajeAumento;
+    scanf("%f", &porcentajeAumento);
 
+    // Aumentar sueldos de todos los empleados
+    aumentarSueldosEmpleados(empleados, numEmpleados, porcentajeAumento);
+
+    
     printf("Lista de empleados después del aumento de sueldo:\n");
     mostrarEmpleados(empleados, numEmpleados); // Mostrar empleados después del aumento
 
