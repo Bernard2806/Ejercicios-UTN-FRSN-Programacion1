@@ -29,6 +29,12 @@ void insertarEstudiante(Nodo **cabeza, Estudiante estudiante); // Inserta un est
 void imprimirLista(Nodo *cabeza); // Imprime la lista de estudiantes
 void liberarLista(Nodo **cabeza); // Libera la memoria de la lista de estudiantes
 
+// Prototipo de Funciones de los Ejercicios
+void buscarEstudiantePorLegajo(Nodo *cabeza, int legajo); // Busca un estudiante por su legajo
+void eliminarEstudiantePorLegajo(Nodo **cabeza, int legajo); // Elimina un estudiante por su legajo
+int totalEstudiantesAprobados(Nodo *cabeza); // Cuenta el total de estudiantes aprobados
+int totalEstudiantesDesaprobados(Nodo *cabeza); // Cuenta el total de estudiantes desaprobados
+
 int main()
 {
     Nodo *listaEstudiantes = NULL; // Inicializar la lista de estudiantes como vacía
@@ -45,6 +51,13 @@ int main()
     printf("\n--- Lista final de estudiantes ---\n");
     imprimirLista(listaEstudiantes);
 
+    // Buscar un estudiante por legajo
+    int legajoABuscar;
+    printf("\nIngrese el legajo del estudiante a buscar: ");
+    scanf("%d", &legajoABuscar);
+
+    buscarEstudiantePorLegajo(listaEstudiantes, legajoABuscar);
+    
     // Liberar memoria
     liberarLista(&listaEstudiantes);
 
@@ -146,4 +159,23 @@ void liberarLista(Nodo **cabeza)
         actual = siguiente;
     }
     *cabeza = NULL;
+}
+
+void buscarEstudiantePorLegajo(Nodo *cabeza, int legajo)
+{
+    Nodo *actual = cabeza;
+    while (actual != NULL)
+    {
+        if (actual->estudiante.legajo == legajo)
+        {
+            printf("Estudiante encontrado: Legajo: %d, Nombre: %s, Apellido: %s, Nota Definitiva: %.2f\n",
+                   actual->estudiante.legajo,
+                   actual->estudiante.nombre,
+                   actual->estudiante.apellido,
+                   actual->estudiante.notaDefinitiva);
+            return;
+        }
+        actual = actual->siguiente;
+    }
+    printf("Estudiante con legajo %d no encontrado.\n", legajo);
 }
