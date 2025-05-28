@@ -21,19 +21,19 @@ typedef struct Nodo
 } Nodo;
 
 // Prototipos de Funciones
-Nodo *crearNodo(Estudiante estudiante); // Crea un nuevo nodo con un estudiante
-Estudiante crearEstudiante(); // Crea un nuevo estudiante solicitando datos al usuario
-void insertarEstudianteAlFinal(Nodo **cabeza, Estudiante estudiante); // Inserta un estudiante al final de la lista
+Nodo *crearNodo(Estudiante estudiante);                                // Crea un nuevo nodo con un estudiante
+Estudiante crearEstudiante();                                          // Crea un nuevo estudiante solicitando datos al usuario
+void insertarEstudianteAlFinal(Nodo **cabeza, Estudiante estudiante);  // Inserta un estudiante al final de la lista
 void insertarEstudianteAlInicio(Nodo **cabeza, Estudiante estudiante); // Inserta un estudiante al inicio de la lista
-void insertarEstudiante(Nodo **cabeza, Estudiante estudiante); // Inserta un estudiante en la lista según su nota definitiva
-void imprimirLista(Nodo *cabeza); // Imprime la lista de estudiantes
-void liberarLista(Nodo **cabeza); // Libera la memoria de la lista de estudiantes
+void insertarEstudiante(Nodo **cabeza, Estudiante estudiante);         // Inserta un estudiante en la lista según su nota definitiva
+void imprimirLista(Nodo *cabeza);                                      // Imprime la lista de estudiantes
+void liberarLista(Nodo **cabeza);                                      // Libera la memoria de la lista de estudiantes
 
 // Prototipo de Funciones de los Ejercicios
-void buscarEstudiantePorLegajo(Nodo *cabeza, int legajo); // Busca un estudiante por su legajo
+void buscarEstudiantePorLegajo(Nodo *cabeza, int legajo);    // Busca un estudiante por su legajo
 void eliminarEstudiantePorLegajo(Nodo **cabeza, int legajo); // Elimina un estudiante por su legajo
-int totalEstudiantesAprobados(Nodo *cabeza); // Cuenta el total de estudiantes aprobados
-int totalEstudiantesDesaprobados(Nodo *cabeza); // Cuenta el total de estudiantes desaprobados
+int totalEstudiantesAprobados(Nodo *cabeza);                 // Cuenta el total de estudiantes aprobados
+int totalEstudiantesDesaprobados(Nodo *cabeza);              // Cuenta el total de estudiantes desaprobados
 
 int main()
 {
@@ -57,7 +57,28 @@ int main()
     scanf("%d", &legajoABuscar);
 
     buscarEstudiantePorLegajo(listaEstudiantes, legajoABuscar);
-    
+
+    // Eliminar un estudiante por legajo (opcional)
+    printf("\n¿Desea Eliminar un Estudiante? (Y/N): ");
+    char respuesta;
+    scanf(" %c", &respuesta);
+
+    if (respuesta == 'Y' || respuesta == 'y')
+    {
+        int legajoAEliminar;
+        printf("Ingrese el legajo del estudiante a eliminar: ");
+        scanf("%d", &legajoAEliminar);
+        eliminarEstudiantePorLegajo(&listaEstudiantes, legajoAEliminar);
+
+        // Imprimir lista de estudiantes después de eliminar
+        printf("\n--- Lista de estudiantes después de eliminar ---\n");
+        imprimirLista(listaEstudiantes);
+    }
+    else
+    {
+        printf("No se elimino ningún estudiante.\n");
+    }
+
     // Liberar memoria
     liberarLista(&listaEstudiantes);
 
@@ -178,4 +199,34 @@ void buscarEstudiantePorLegajo(Nodo *cabeza, int legajo)
         actual = actual->siguiente;
     }
     printf("Estudiante con legajo %d no encontrado.\n", legajo);
+}
+
+void eliminarEstudiantePorLegajo(Nodo **cabeza, int legajo)
+{
+    Nodo *actual = *cabeza;
+    Nodo *anterior = NULL;
+
+    while (actual != NULL && actual->estudiante.legajo != legajo)
+    {
+        anterior = actual;
+        actual = actual->siguiente;
+    }
+
+    if (actual == NULL)
+    {
+        printf("Estudiante con legajo %d no encontrado.\n", legajo);
+        return;
+    }
+
+    if (anterior == NULL)
+    {
+        *cabeza = actual->siguiente; // Eliminar el primer nodo
+    }
+    else
+    {
+        anterior->siguiente = actual->siguiente; // Eliminar un nodo intermedio o final
+    }
+
+    free(actual);
+    printf("Estudiante con legajo %d eliminado.\n", legajo);
 }
