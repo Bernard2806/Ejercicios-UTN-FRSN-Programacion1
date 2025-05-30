@@ -22,11 +22,15 @@ typedef struct Contacto
 // Prototipos de Funciones
 
 // Añadidas por mi
-int mostrarMenuIncial();
-void logicaMenuInicial(int opcion);
+int mostrarMenuIncial(); // Esta función muestra el menú inicial y devuelve la opción seleccionada por el usuario
+void logicaMenuInicial(int opcion, Contacto *contactos, int numContactos); // Esta función maneja la lógica del menú inicial
 
 // Solicitadas en el Ejercicio
-void cargarContactos(Contacto *contactos, int *numContactos);
+void cargarContactos(Contacto *contactos, int *numContactos); // Esta función carga contactos iniciales pidiendolos al usuario en el array de contactos
+void mostrarContacto(Contacto contacto);                      // Esta función muestra un contacto en la consola
+void buscarPorCategoria(Contacto *contactos, int numContactos, int categoria); // Esta función busca contactos por categoría
+void ordenarPorNombre(Contacto *contactos, int numContactos); // Esta función ordena los contactos por nombre
+void contarPorCategoria(Contacto *contactos, int numContactos); // Esta función cuenta los contactos por categoría
 
 int main()
 {
@@ -39,14 +43,14 @@ int main()
     while (1)
     {
         int opcion = mostrarMenuIncial();
-        logicaMenuInicial(opcion);
+        logicaMenuInicial(opcion, contactos, numContactos);
         printf("\n");
     }
 
     return 0;
 }
 
-void logicaMenuInicial(int opcion)
+void logicaMenuInicial(int opcion, Contacto *contactos, int numContactos)
 {
     switch (opcion)
     {
@@ -77,6 +81,7 @@ int mostrarMenuIncial()
 {
     int opcion;
 
+    printf("----- Menú -----\n");
     printf("1. Mostrar todos\n");
     printf("2. Buscar por categoría\n");
     printf("3. Ordenar por nombre\n");
@@ -110,4 +115,28 @@ void cargarContactos(Contacto *contactos, int *numContactos)
         scanf("%d", &contactos[i].categoria);
         (*numContactos)++;
     }
+}
+
+void mostrarContacto(Contacto contacto)
+{
+    printf("Nombre: %s\n", contacto.nombre);
+    printf("Teléfono: %s\n", contacto.telefono);
+    printf("Email: %s\n", contacto.email);
+
+    switch (contacto.categoria)
+    {
+    case 1:
+        printf("Categoría: Familia\n");
+        break;
+    case 2:
+        printf("Categoría: Trabajo\n");
+        break;
+    case 3:
+        printf("Categoría: Amigos\n");
+        break;
+    default:
+        printf("Categoría: Desconocida\n");
+        break;
+    }
+    printf("-------------------------\n");
 }
