@@ -1,6 +1,14 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+// Definición de la función clearScreen para limpiar la consola
+void clearScreen()
+{
+#ifdef _WIN32 system("cls");
+#else system("clear");
+#endif
+}
+
 // Ejercicio 2: Agenda de Contactos
 
 // Definir constante para el número máximo de contactos
@@ -22,15 +30,16 @@ typedef struct Contacto
 // Prototipos de Funciones
 
 // Añadidas por mi
-int mostrarMenuIncial(); // Esta función muestra el menú inicial y devuelve la opción seleccionada por el usuario
+int mostrarMenuIncial();                                                   // Esta función muestra el menú inicial y devuelve la opción seleccionada por el usuario
 void logicaMenuInicial(int opcion, Contacto *contactos, int numContactos); // Esta función maneja la lógica del menú inicial
+void mostrarTodos(Contacto *contactos, int numContactos);                  // Esta función muestra todos los contactos en la consola
 
 // Solicitadas en el Ejercicio
-void cargarContactos(Contacto *contactos, int *numContactos); // Esta función carga contactos iniciales pidiendolos al usuario en el array de contactos
-void mostrarContacto(Contacto contacto);                      // Esta función muestra un contacto en la consola
+void cargarContactos(Contacto *contactos, int *numContactos);                  // Esta función carga contactos iniciales pidiendolos al usuario en el array de contactos
+void mostrarContacto(Contacto contacto);                                       // Esta función muestra un contacto en la consola
 void buscarPorCategoria(Contacto *contactos, int numContactos, int categoria); // Esta función busca contactos por categoría
-void ordenarPorNombre(Contacto *contactos, int numContactos); // Esta función ordena los contactos por nombre
-void contarPorCategoria(Contacto *contactos, int numContactos); // Esta función cuenta los contactos por categoría
+void ordenarPorNombre(Contacto *contactos, int numContactos);                  // Esta función ordena los contactos por nombre
+void contarPorCategoria(Contacto *contactos, int numContactos);                // Esta función cuenta los contactos por categoría
 
 int main()
 {
@@ -40,6 +49,10 @@ int main()
     // Cargar contactos iniciales
     cargarContactos(contactos, &numContactos);
 
+    // Limpiar la pantalla al inicio
+    clearScreen();
+
+    // Bucle infinito para mostrar el menú inicial y manejar las opciones
     while (1)
     {
         int opcion = mostrarMenuIncial();
@@ -55,8 +68,8 @@ void logicaMenuInicial(int opcion, Contacto *contactos, int numContactos)
     switch (opcion)
     {
     case 1:
-        printf("Mostrar todos\n");
-        // Aquí iría la lógica para mostrar todos los elementos
+        printf("Mostrar todos los contactos:\n");
+        mostrarTodos(contactos, numContactos);
         break;
     case 2:
         printf("Buscar por categoría\n");
@@ -119,6 +132,7 @@ void cargarContactos(Contacto *contactos, int *numContactos)
 
 void mostrarContacto(Contacto contacto)
 {
+    printf("-------------------------\n");
     printf("Nombre: %s\n", contacto.nombre);
     printf("Teléfono: %s\n", contacto.telefono);
     printf("Email: %s\n", contacto.email);
@@ -139,4 +153,18 @@ void mostrarContacto(Contacto contacto)
         break;
     }
     printf("-------------------------\n");
+}
+
+void mostrarTodos(Contacto *contactos, int numContactos)
+{
+    if (numContactos == 0)
+    {
+        printf("No hay contactos para mostrar.\n");
+        return;
+    }
+
+    for (int i = 0; i < numContactos; i++)
+    {
+        mostrarContacto(contactos[i]);
+    }
 }
