@@ -83,12 +83,13 @@ void logicaMenuInicial(int opcion, Contacto *contactos, int numContactos)
             printf("Categoría inválida. Por favor, ingrese una categoría entre 1 y 3: ");
             scanf("%d", &categoria);
         }
-        
+
         buscarPorCategoria(contactos, numContactos, categoria);
         break;
     case 3:
         printf("Ordenar por nombre\n");
-        // Aquí iría la lógica para ordenar por nombre
+        ordenarPorNombre(contactos, numContactos);
+        mostrarTodos(contactos, numContactos);
         break;
     case 4:
         printf("Contar por categoría\n");
@@ -202,4 +203,51 @@ void buscarPorCategoria(Contacto *contactos, int numContactos, int categoria)
     {
         printf("No se encontraron contactos en la categoría seleccionada.\n");
     }
+}
+
+void ordenarPorNombre(Contacto *contactos, int numContactos)
+{
+    // Implementación de la lógica de ordenamiento por nombre
+    for (int i = 0; i < numContactos - 1; i++)
+    {
+        for (int j = i + 1; j < numContactos; j++)
+        {
+            if (strcmp(contactos[i].nombre, contactos[j].nombre) > 0)
+            {
+                Contacto temp = contactos[i];
+                contactos[i] = contactos[j];
+                contactos[j] = temp;
+            }
+        }
+    }
+    printf("Contactos ordenados por nombre.\n");
+}
+
+void contarPorCategoria(Contacto *contactos, int numContactos)
+{
+    clearScreen();
+    int contadorFamilia = 0, contadorTrabajo = 0, contadorAmigos = 0;
+
+    for (int i = 0; i < numContactos; i++)
+    {
+        switch (contactos[i].categoria)
+        {
+        case 1:
+            contadorFamilia++;
+            break;
+        case 2:
+            contadorTrabajo++;
+            break;
+        case 3:
+            contadorAmigos++;
+            break;
+        default:
+            break;
+        }
+    }
+
+    printf("Total de contactos por categoría:\n");
+    printf("Familia: %d\n", contadorFamilia);
+    printf("Trabajo: %d\n", contadorTrabajo);
+    printf("Amigos: %d\n", contadorAmigos);
 }
