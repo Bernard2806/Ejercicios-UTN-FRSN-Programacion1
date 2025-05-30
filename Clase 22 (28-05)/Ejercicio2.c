@@ -73,7 +73,18 @@ void logicaMenuInicial(int opcion, Contacto *contactos, int numContactos)
         break;
     case 2:
         printf("Buscar por categoría\n");
-        // Aquí iría la lógica para buscar por categoría
+        printf("Ingrese la categoría (1=Familia, 2=Trabajo, 3=Amigos): ");
+
+        int categoria;
+        scanf("%d", &categoria);
+
+        while (categoria < 1 || categoria > 3)
+        {
+            printf("Categoría inválida. Por favor, ingrese una categoría entre 1 y 3: ");
+            scanf("%d", &categoria);
+        }
+        
+        buscarPorCategoria(contactos, numContactos, categoria);
         break;
     case 3:
         printf("Ordenar por nombre\n");
@@ -93,6 +104,7 @@ void logicaMenuInicial(int opcion, Contacto *contactos, int numContactos)
 int mostrarMenuIncial()
 {
     int opcion;
+    clearScreen();
 
     printf("----- Menú -----\n");
     printf("1. Mostrar todos\n");
@@ -115,6 +127,7 @@ int mostrarMenuIncial()
 
 void cargarContactos(Contacto *contactos, int *numContactos)
 {
+    clearScreen();
     // Cargar contactos iniciales
     for (int i = 0; i < CANTIDAD_CONTACTOS_INICIAL; i++)
     {
@@ -127,6 +140,7 @@ void cargarContactos(Contacto *contactos, int *numContactos)
         printf("Ingrese la categoria del contacto %d (1=Familia, 2=Trabajo, 3=Amigos): ", i + 1);
         scanf("%d", &contactos[i].categoria);
         (*numContactos)++;
+        clearScreen();
     }
 }
 
@@ -157,6 +171,7 @@ void mostrarContacto(Contacto contacto)
 
 void mostrarTodos(Contacto *contactos, int numContactos)
 {
+    clearScreen();
     if (numContactos == 0)
     {
         printf("No hay contactos para mostrar.\n");
@@ -166,5 +181,25 @@ void mostrarTodos(Contacto *contactos, int numContactos)
     for (int i = 0; i < numContactos; i++)
     {
         mostrarContacto(contactos[i]);
+    }
+}
+
+void buscarPorCategoria(Contacto *contactos, int numContactos, int categoria)
+{
+    clearScreen();
+    int encontrado = 0;
+
+    for (int i = 0; i < numContactos; i++)
+    {
+        if (contactos[i].categoria == categoria)
+        {
+            mostrarContacto(contactos[i]);
+            encontrado = 1;
+        }
+    }
+
+    if (!encontrado)
+    {
+        printf("No se encontraron contactos en la categoría seleccionada.\n");
     }
 }
