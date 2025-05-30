@@ -1,21 +1,40 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+// Ejercicio 2: Agenda de Contactos
+
+// Definir constante para el número máximo de contactos
+#define MAX_CONTACTOS 10
+
+// Definir constante para la cantidad de contactos a cargar al iniciar
+#define CANTIDAD_CONTACTOS_INICIAL 5
+
 // Definición de la estructura Contacto
 // Esta estructura representa un contacto con su nombre, teléfono, email y categoría.
-typedef struct { 
-    char nombre[50]; 
-    char telefono[15]; 
-    char email[50]; 
-    int categoria;  // 1=Familia, 2=Trabajo, 3=Amigos 
+typedef struct Contacto
+{
+    char nombre[50];
+    char telefono[15];
+    char email[50];
+    int categoria; // 1=Familia, 2=Trabajo, 3=Amigos
 } Contacto;
 
 // Prototipos de Funciones
+
+// Añadidas por mi
 int mostrarMenuIncial();
 void logicaMenuInicial(int opcion);
 
+// Solicitadas en el Ejercicio
+void cargarContactos(Contacto *contactos, int *numContactos);
+
 int main()
 {
+    Contacto contactos[MAX_CONTACTOS];
+    int numContactos = 0;
+
+    // Cargar contactos iniciales
+    cargarContactos(contactos, &numContactos);
 
     while (1)
     {
@@ -53,6 +72,7 @@ void logicaMenuInicial(int opcion)
         printf("Opción no válida.\n");
     }
 }
+
 int mostrarMenuIncial()
 {
     int opcion;
@@ -73,4 +93,21 @@ int mostrarMenuIncial()
     }
 
     return opcion;
+}
+
+void cargarContactos(Contacto *contactos, int *numContactos)
+{
+    // Cargar contactos iniciales
+    for (int i = 0; i < CANTIDAD_CONTACTOS_INICIAL; i++)
+    {
+        printf("Ingrese el nombre del contacto %d: ", i + 1);
+        scanf("%s", contactos[i].nombre);
+        printf("Ingrese el telefono del contacto %d: ", i + 1);
+        scanf("%s", contactos[i].telefono);
+        printf("Ingrese el email del contacto %d: ", i + 1);
+        scanf("%s", contactos[i].email);
+        printf("Ingrese la categoria del contacto %d (1=Familia, 2=Trabajo, 3=Amigos): ", i + 1);
+        scanf("%d", &contactos[i].categoria);
+        (*numContactos)++;
+    }
 }
