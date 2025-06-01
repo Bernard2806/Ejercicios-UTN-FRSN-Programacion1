@@ -1,13 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
-
-// Definición de la función clearScreen para limpiar la consola
-void clearScreen()
-{
-#ifdef _WIN32 system("cls");
-#else system("clear");
-#endif
-}
+#include <string.h>
 
 // Ejercicio 2: Agenda de Contactos
 
@@ -48,9 +41,6 @@ int main()
 
     // Cargar contactos iniciales
     cargarContactos(contactos, &numContactos);
-
-    // Limpiar la pantalla al inicio
-    clearScreen();
 
     // Bucle infinito para mostrar el menú inicial y manejar las opciones
     while (1)
@@ -93,19 +83,21 @@ void logicaMenuInicial(int opcion, Contacto *contactos, int numContactos)
         break;
     case 4:
         printf("Contar por categoría\n");
-        // Aquí iría la lógica para contar por categoría
+        contarPorCategoria(contactos, numContactos);
         break;
     case 5:
         exit(0);
     default:
         printf("Opción no válida.\n");
     }
+
+    printf("Presione Enter para continuar...");
+    getchar(); // Consumir el salto de línea pendiente
 }
 
 int mostrarMenuIncial()
 {
     int opcion;
-    clearScreen();
 
     printf("----- Menú -----\n");
     printf("1. Mostrar todos\n");
@@ -128,7 +120,6 @@ int mostrarMenuIncial()
 
 void cargarContactos(Contacto *contactos, int *numContactos)
 {
-    clearScreen();
     // Cargar contactos iniciales
     for (int i = 0; i < CANTIDAD_CONTACTOS_INICIAL; i++)
     {
@@ -141,7 +132,6 @@ void cargarContactos(Contacto *contactos, int *numContactos)
         printf("Ingrese la categoria del contacto %d (1=Familia, 2=Trabajo, 3=Amigos): ", i + 1);
         scanf("%d", &contactos[i].categoria);
         (*numContactos)++;
-        clearScreen();
     }
 }
 
@@ -172,7 +162,6 @@ void mostrarContacto(Contacto contacto)
 
 void mostrarTodos(Contacto *contactos, int numContactos)
 {
-    clearScreen();
     if (numContactos == 0)
     {
         printf("No hay contactos para mostrar.\n");
@@ -187,7 +176,6 @@ void mostrarTodos(Contacto *contactos, int numContactos)
 
 void buscarPorCategoria(Contacto *contactos, int numContactos, int categoria)
 {
-    clearScreen();
     int encontrado = 0;
 
     for (int i = 0; i < numContactos; i++)
@@ -225,7 +213,6 @@ void ordenarPorNombre(Contacto *contactos, int numContactos)
 
 void contarPorCategoria(Contacto *contactos, int numContactos)
 {
-    clearScreen();
     int contadorFamilia = 0, contadorTrabajo = 0, contadorAmigos = 0;
 
     for (int i = 0; i < numContactos; i++)
