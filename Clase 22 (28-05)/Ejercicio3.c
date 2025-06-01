@@ -5,8 +5,8 @@
 // Definición de constantes
 // Definimos el número de sucursales y meses como constantes
 
-#define FILAS 3  // Sucursales
-#define COLUMNAS 4  // Meses
+#define FILAS 3    // Sucursales
+#define COLUMNAS 4 // Meses
 
 // Prototipos de funciones
 void cargarVentas(int ventas[FILAS][COLUMNAS]);
@@ -15,7 +15,8 @@ void mostrarTotalesPorMes(int ventas[FILAS][COLUMNAS]);
 int sucursalMaxVentas(int ventas[FILAS][COLUMNAS]);
 float promedioVentas(int ventas[FILAS][COLUMNAS]);
 
-int main() {
+int main()
+{
     int ventas[FILAS][COLUMNAS];
 
     // 1. Cargar la matriz
@@ -39,10 +40,13 @@ int main() {
 }
 
 // Función para cargar los datos
-void cargarVentas(int ventas[FILAS][COLUMNAS]) {
+void cargarVentas(int ventas[FILAS][COLUMNAS])
+{
     printf("Ingrese las ventas de cada sucursal por mes:\n");
-    for (int i = 0; i < FILAS; i++) {
-        for (int j = 0; j < COLUMNAS; j++) {
+    for (int i = 0; i < FILAS; i++)
+    {
+        for (int j = 0; j < COLUMNAS; j++)
+        {
             printf("Sucursal %d - Mes %d: ", i + 1, j + 1);
             scanf("%d", &ventas[i][j]);
         }
@@ -50,11 +54,14 @@ void cargarVentas(int ventas[FILAS][COLUMNAS]) {
 }
 
 // a) Mostrar totales por sucursal (suma por filas)
-void mostrarTotalesPorSucursal(int ventas[FILAS][COLUMNAS]) {
+void mostrarTotalesPorSucursal(int ventas[FILAS][COLUMNAS])
+{
     printf("\nTotal vendido por cada sucursal:\n");
-    for (int i = 0; i < FILAS; i++) {
+    for (int i = 0; i < FILAS; i++)
+    {
         int suma = 0;
-        for (int j = 0; j < COLUMNAS; j++) {
+        for (int j = 0; j < COLUMNAS; j++)
+        {
             suma += ventas[i][j];
         }
         printf("Sucursal %d: %d\n", i + 1, suma);
@@ -62,11 +69,14 @@ void mostrarTotalesPorSucursal(int ventas[FILAS][COLUMNAS]) {
 }
 
 // b) Mostrar totales por mes (suma por columnas)
-void mostrarTotalesPorMes(int ventas[FILAS][COLUMNAS]) {
+void mostrarTotalesPorMes(int ventas[FILAS][COLUMNAS])
+{
     printf("\nTotal vendido por cada mes:\n");
-    for (int j = 0; j < COLUMNAS; j++) {
+    for (int j = 0; j < COLUMNAS; j++)
+    {
         int suma = 0;
-        for (int i = 0; i < FILAS; i++) {
+        for (int i = 0; i < FILAS; i++)
+        {
             suma += ventas[i][j];
         }
         printf("Mes %d: %d\n", j + 1, suma);
@@ -74,16 +84,20 @@ void mostrarTotalesPorMes(int ventas[FILAS][COLUMNAS]) {
 }
 
 // c) Devolver la sucursal con más ventas (índice)
-int sucursalMaxVentas(int ventas[FILAS][COLUMNAS]) {
+int sucursalMaxVentas(int ventas[FILAS][COLUMNAS])
+{
     int maxSucursal = 0;
     int maxVentas = 0;
 
-    for (int i = 0; i < FILAS; i++) {
+    for (int i = 0; i < FILAS; i++)
+    {
         int suma = 0;
-        for (int j = 0; j < COLUMNAS; j++) {
+        for (int j = 0; j < COLUMNAS; j++)
+        {
             suma += ventas[i][j];
         }
-        if (suma > maxVentas || i == 0) {
+        if (suma > maxVentas || i == 0)
+        {
             maxVentas = suma;
             maxSucursal = i;
         }
@@ -93,10 +107,13 @@ int sucursalMaxVentas(int ventas[FILAS][COLUMNAS]) {
 }
 
 // d) Promedio total de ventas
-float promedioVentas(int ventas[FILAS][COLUMNAS]) {
+float promedioVentas(int ventas[FILAS][COLUMNAS])
+{
     int sumaTotal = 0;
-    for (int i = 0; i < FILAS; i++) {
-        for (int j = 0; j < COLUMNAS; j++) {
+    for (int i = 0; i < FILAS; i++)
+    {
+        for (int j = 0; j < COLUMNAS; j++)
+        {
             sumaTotal += ventas[i][j];
         }
     }
