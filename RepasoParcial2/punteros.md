@@ -1,5 +1,3 @@
-## Resumen Punteros C - Parcial 2
-
 ### 🧠 ¿Qué es un puntero?
 
 Un **puntero** es una variable que guarda la **dirección de memoria** de otra variable.
